@@ -2,8 +2,8 @@ import 'package:admin_panal/page/login_admin.dart';
 import 'package:admin_panal/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 
-class SignUpAdmin_Screen extends StatelessWidget {
-  const SignUpAdmin_Screen({Key? key}) : super(key: key);
+class SignUpAdminScreen extends StatelessWidget {
+  const SignUpAdminScreen({Key? key}) : super(key: key);
 
   @override
   
@@ -131,7 +131,7 @@ class SignUpAdmin_Screen extends StatelessWidget {
                             onTap: () {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
-                                return LoginAdmin_Screen();
+                                return LoginAdminScreen();
                               }));
                             },
                             child:TextUtils(

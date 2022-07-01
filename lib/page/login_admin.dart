@@ -1,15 +1,16 @@
+import 'package:admin_panal/page/manage_users.dart';
 import 'package:admin_panal/utils/app_colors.dart';
 import 'package:admin_panal/page/signup_admin.dart';
 import 'package:admin_panal/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 
-class LoginAdmin_Screen extends StatelessWidget {
-final TextEditingController passwordController = TextEditingController();
+class LoginAdminScreen extends StatelessWidget {
+  final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   // final controller = Get.put(AuthController());
   // final _Key = GlobalKey<FormState>();
 
-   LoginAdmin_Screen({Key? key}) : super(key: key);
+  LoginAdminScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,7 +55,7 @@ final TextEditingController passwordController = TextEditingController();
                         padding: const EdgeInsets.only(left: 8.0),
                         child: TextField(
                           controller: emailController,
-                          decoration:const InputDecoration(
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Email',
                               icon: Icon(Icons.email_outlined)),
@@ -62,7 +63,7 @@ final TextEditingController passwordController = TextEditingController();
                       ),
                     ),
                   ),
-                 const SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Padding(
@@ -73,7 +74,7 @@ final TextEditingController passwordController = TextEditingController();
                         padding: const EdgeInsets.only(left: 8.0),
                         child: TextField(
                           controller: passwordController,
-                          decoration:const InputDecoration(
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Password',
                               icon: Icon(Icons.lock_open)),
@@ -81,7 +82,7 @@ final TextEditingController passwordController = TextEditingController();
                       ),
                     ),
                   ),
-                const  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Padding(
@@ -98,15 +99,20 @@ final TextEditingController passwordController = TextEditingController();
                       ],
                     ),
                   ),
-                 const SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
-                      decoration:const BoxDecoration(color: Colors.indigo),
+                      decoration: const BoxDecoration(color: Colors.indigo),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Navigator.of(context)
+                          //     .push(MaterialPageRoute(builder: (context) {
+                          //   return const User_ManageScreen();
+                          // }));
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Row(
@@ -125,7 +131,7 @@ final TextEditingController passwordController = TextEditingController();
                       ),
                     ),
                   ),
-                 const SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Padding(
@@ -133,11 +139,11 @@ final TextEditingController passwordController = TextEditingController();
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                         GestureDetector(
+                        GestureDetector(
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (context) {
-                              return const SignUpAdmin_Screen();
+                              return const SignUpAdminScreen();
                             }));
                           },
                           child: TextUtils(
@@ -153,7 +159,6 @@ final TextEditingController passwordController = TextEditingController();
                             text: "إنشاء حساب مدير ",
                             color: Colors.grey,
                             underLine: TextDecoration.none),
-                       
                       ],
                     ),
                   ),

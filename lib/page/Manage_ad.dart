@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 
 
-class Products_Screen extends StatelessWidget {
-  const Products_Screen({Key? key}) : super(key: key);
+class Manage_AdScreen extends StatelessWidget {
+  const Manage_AdScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

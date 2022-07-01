@@ -1,5 +1,7 @@
 
 import 'package:admin_panal/page/login_admin.dart';
+import 'package:admin_panal/page/manage_products.dart';
+import 'package:admin_panal/page/manage_users.dart';
 import 'package:flutter/material.dart';
 
 void main()  {
@@ -19,7 +21,7 @@ void main()  {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: LoginAdmin_Screen(),
+      home: Manage_UserScreen(),
     );
   }
 }
