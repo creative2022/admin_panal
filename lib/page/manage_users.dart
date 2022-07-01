@@ -6,13 +6,13 @@ class Manage_UserScreen extends StatelessWidget {
   const Manage_UserScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Directionality(
-          textDirection: TextDirection.rtl,
+          textDirection: TextDirection.ltr,
           child: Padding(
-            padding: const EdgeInsets.all(250),
+            padding:  EdgeInsets.all(250),
             child: datatable(),
           ),
         ),
