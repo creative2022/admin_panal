@@ -1,12 +1,60 @@
 import 'package:flutter/material.dart';
 
-
-
-class Reports_Screen extends StatelessWidget {
-  const Reports_Screen({Key? key}) : super(key: key);
+class ReprtsScreen extends StatelessWidget {
+  const ReprtsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    Widget analyticWidget(name) {
+      return Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Container(
+          height: 100,
+          width: 200,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueGrey),
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.blue,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "Total ${name}",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("3"),
+                  Icon(Icons.show_chart),
+                ],
+              )
+            ]),
+          ),
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 20,
+            runSpacing: 20,
+            children: [
+              analyticWidget("users"),
+              analyticWidget("prodect"),
+              analyticWidget("ads"),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
