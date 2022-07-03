@@ -1,8 +1,7 @@
-import 'package:admin_panal/page/home.dart';
-import 'package:admin_panal/page/login_admin.dart';
-import 'package:admin_panal/page/signup_admin.dart';
+import 'package:admin_panal/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,13 +22,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Admin Panal ',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: HomeScreen(),
+      initialRoute: AppRoutes.login,
+      getPages: AppRoutes.routes,
+
+
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatelessWidget {
   const Loading({Key? key}) : super(key: key);
@@ -9,10 +9,10 @@ class Loading extends StatelessWidget {
     return Center(
           child: Container(
         color:const Color.fromRGBO(255, 255, 255, 1),
-        // child: SpinKitFadingCircle(
-        //   color: Colors.black,
-        //   size: 30,
-        // )
+        child: SpinKitFadingCircle(
+          color: Colors.black,
+          size: 30,
+        )
       ),
     );
   }

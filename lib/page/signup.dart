@@ -1,4 +1,4 @@
-import 'package:admin_panal/page/login_admin.dart';
+import 'package:admin_panal/page/login.dart';
 import 'package:admin_panal/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 
