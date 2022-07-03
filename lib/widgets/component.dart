@@ -1,5 +1,8 @@
-import 'package:data_table_2/data_table_2.dart';
+import 'dart:html';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 Widget customText(context,
         {bool upperCase = true,
@@ -15,65 +18,33 @@ Widget customText(context,
     );
 
 deleteConfirmation(context, {required String text1, String? text2, function}) =>
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: Text(
-                'Are you sure you want to delete ${text1} ${text2 ?? ''}?'),
-            actions: [
-              Row(
-                children: [
-                  Expanded(
-                      child: defaultButton(
-                          function: () {
-                            Navigator.pop(context);
-                          },
-                          text: 'Cancel',
-                          background: Colors.grey)),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                      child: defaultButton(
-                          background: Colors.red,
-                          text: 'Delete',
-                          function: function)),
-                ],
-              )
-            ],
-          );
-        });
+    AwesomeDialog(
+      context: context,
+      width: 500,
+      dialogType: DialogType.QUESTION,
+      animType: AnimType.SCALE,
+      title: ' هل تريد تأكيد الحذف',
+      desc: 'حذف ${text1}',
+      btnCancelOnPress: () {
+        Get.back();
+      },
+      btnOkOnPress: () {},
+    )..show();
+
 blockConfirmation(context, {required String text1, String? text2, function}) =>
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title:
-                Text('Are you sure you want to block ${text1} ${text2 ?? ''}?'),
-            actions: [
-              Row(
-                children: [
-                  Expanded(
-                      child: defaultButton(
-                          function: () {
-                            Navigator.pop(context);
-                          },
-                          text: 'Cancel',
-                          background: Colors.grey)),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                      child: defaultButton(
-                          background: Colors.red,
-                          text: 'block',
-                          function: function)),
-                ],
-              )
-            ],
-          );
-        });
+     AwesomeDialog(
+      context: context,
+      width: 500,
+      dialogType: DialogType.QUESTION,
+      animType: AnimType.SCALE,
+      title: ' هل تريد تأكيد الحظر',
+      desc: 'حظر المستخدم ${text1}',
+      btnCancelOnPress: () {
+        Get.back();
+      },
+      btnOkOnPress: () {},
+    )..show();
+        
 Widget defaultButton(
         {double width = double.infinity,
         Color background = Colors.green,
@@ -101,4 +72,3 @@ Widget defaultButton(
             : Icon(icon),
       ),
     );
-

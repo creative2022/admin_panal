@@ -1,4 +1,6 @@
 import 'package:admin_panal/page/home.dart';
+import 'package:admin_panal/page/login_admin.dart';
+import 'package:admin_panal/page/signup_admin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

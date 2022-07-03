@@ -6,62 +6,42 @@ class Manage_UserScreen extends StatelessWidget {
   const Manage_UserScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Directionality(
-          textDirection: TextDirection.ltr,
+          textDirection: TextDirection.rtl,
           child: Padding(
-            padding:  EdgeInsets.all(250),
-            child: datatable(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class datatable extends StatelessWidget {
-  const datatable({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DataTable2(
-        columnSpacing: 10,
-        horizontalMargin: 20,
-        minWidth: 20,
+            padding: EdgeInsets.all(200),
+            child: DataTable2( columnSpacing: 5,
+        horizontalMargin: 5,
+        minWidth: 5,
         columns: const [
           DataColumn2(
-            label: Text('Id'),
+            label: Text('معرف الحساب'),
             size: ColumnSize.L,
           ),
           DataColumn2(
-            label: Text('FirstName'),
+            label: Text('الإسم'),
             size: ColumnSize.L,
           ),
-          DataColumn2(label: Text('LastName'), size: ColumnSize.M),
+          DataColumn2(label: Text('اللقب'), size: ColumnSize.M),
           DataColumn2(
-            size: ColumnSize.L,
-            label: Text('Email'),
-          ),
-          DataColumn2(
-            size: ColumnSize.L,
-            label: Text('PhoneNumber'),
+            size: ColumnSize.M,
+            label: Text('الإيميل'),
           ),
           DataColumn2(
             size: ColumnSize.L,
-            label: Text('Password'),
+            label: Text('رقم الهاتف'),
+          ),
+          DataColumn2(
+            size: ColumnSize.L,
+            label: Text('كلمة المرور'),
             numeric: true,
           ),
           DataColumn2(
             size: ColumnSize.L,
-            label: Text('Photo'),
-            numeric: true,
-          ),
-          DataColumn(
-            label: Text(''),
+            label: Text('الصورة'),
             numeric: true,
           ),
           DataColumn(
@@ -69,11 +49,15 @@ class datatable extends StatelessWidget {
             numeric: true,
           ),
           DataColumn(
+            label: Text(''),
+            numeric: true,
+          ),
+          DataColumn2(
+            size: ColumnSize.L,
             label: Text(''),
             numeric: true,
           ),
         ],
-        
         rows: List<DataRow>.generate(
             10,
             (index) => DataRow(cells: [
@@ -93,7 +77,7 @@ class datatable extends StatelessWidget {
                     InkWell(
                       onTap: () {},
                       child: customText(context,
-                          text: 'Edit',
+                          text: 'تعديل',
                           color: Colors.blueGrey,
                           upperCase: false),
                     )
@@ -109,7 +93,7 @@ class datatable extends StatelessWidget {
                           deleteConfirmation(context,
                               text1: "", function: () {});
                         },
-                        child: Text("Delete"),
+                        child: Text("حذف"),
                       ),
                     ],
                   )),
@@ -124,10 +108,15 @@ class datatable extends StatelessWidget {
                           blockConfirmation(context,
                               text1: "", function: () {});
                         },
-                        child: Text("Block"),
+                        child: Text("حظر الحساب"),
                       ),
                     ],
                   )),
-                ])));
+                ]))),
+          ),
+        ),
+      ),
+    );
   }
 }
+
