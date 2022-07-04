@@ -1,8 +1,8 @@
-import 'dart:html';
 
-import 'package:admin_panal/page/login.dart';
+import 'package:admin_panal/models/admin_model.dart';
 import 'package:admin_panal/routes/routes.dart';
 import 'package:admin_panal/widgets/loading.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,4 +51,73 @@ class AuthController extends GetxController {
       );
     }
   }
+  void signUpAdmin({
+    required context,
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    try {
+       Get.to(Loading());
+      UserCredential cred = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+     
+
+     
+      AdminModel _user = AdminModel(
+        uid: cred.user!.uid,
+        password: password,
+        email: email,
+        username:username
+      );
+
+      await _firestore
+          .collection("admin")
+          .doc(cred.user!.uid)
+          .set(_user.toJson());
+
+      update();
+ 
+
+     Get.back();
+ AwesomeDialog(
+      context: context,
+      width: 400,
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.SCALE,
+      title: 'رسالة تأكيد ',
+      desc: 'تم إنشاء الحساب بنجاح',
+      btnOkOnPress: () {
+        Get.offAllNamed(AppRoutes.home);
+      },
+    ).show();
+ 
+      
+    } on FirebaseAuthException catch (error) {
+      Get.back();
+      String message='';
+      if (error.code == 'weak-password') {
+        message = ' !....كلمة مرور ضعيفة جداً  ';
+      } else if (error.code == 'email-already-in-use') {
+        message = ' !....الحساب موجود لهذا الايميل ';
+      } else{
+        message = "!..... لا يوجد اتصال باالانترنت";
+      
+      }
+      Get.snackbar("Error", message, snackPosition: SnackPosition.BOTTOM,backgroundColor:Colors.black26 );
+
+    } catch (error) {
+       Get.snackbar(
+        'Error!',
+        error.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Color.fromARGB(255, 139, 190, 140),
+        colorText: Colors.white,
+      );
+      
+      }
+  }
+
 }

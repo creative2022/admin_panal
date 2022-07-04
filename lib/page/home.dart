@@ -3,6 +3,7 @@ import 'package:admin_panal/page/Manage_ads.dart';
 import 'package:admin_panal/page/manage_products.dart';
 import 'package:admin_panal/page/manage_users.dart';
 import 'package:admin_panal/page/reports.dart';
+import 'package:admin_panal/page/signup.dart';
 import 'package:admin_panal/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -40,6 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
         _selectedScreen= const ReprtsScreen();
       });
        break;
+      case AppRoutes.signup:
+      setState(() {
+        _selectedScreen=  SignUpAdminScreen();
+      });
+       break;
       }
       
    }
@@ -73,6 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
             AdminMenuItem(
               title: ' التقارير',
               route: AppRoutes.reports,
+              icon: Icons.book
+            ),
+             AdminMenuItem(
+              title: 'إنشاء حساب مدير',
+              route: AppRoutes.signup,
               icon: Icons.book
             ),
           ], selectedRoute: AppRoutes.home,

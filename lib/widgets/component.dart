@@ -28,7 +28,10 @@ deleteConfirmation(context, {required String text1, String? text2, function}) =>
       btnCancelOnPress: () {
         Get.back();
       },
-      btnOkOnPress: () {},
+      btnOkOnPress: () {
+        Get.back();
+
+      },
     )..show();
 
 blockConfirmation(context, {required String text1, String? text2, function}) =>

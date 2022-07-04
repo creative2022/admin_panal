@@ -125,26 +125,13 @@ class LoginAdminScreen extends StatelessWidget {
                                   ),
                                   keyboardType: TextInputType.text);
                             },
+                            
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(
                       height: 5,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextUtils(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              text: "هل نسيت كلمة السر؟",
-                              color: AppColors.blackshade,
-                              underLine: TextDecoration.underline),
-                        ],
-                      ),
                     ),
                     const SizedBox(
                       height: 40,
@@ -171,7 +158,7 @@ class LoginAdminScreen extends StatelessWidget {
                                 TextUtils(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  text: "LOGIN",
+                                  text: "تسجيل الدخول",
                                   color: Colors.yellow,
                                   underLine: TextDecoration.none,
                                 ),
@@ -186,14 +173,11 @@ class LoginAdminScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
+                      child: GestureDetector(
                             onTap: () {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
-                                return const SignUpAdminScreen();
+                                return  SignUpAdminScreen();
                               }));
                             },
                             child: TextUtils(
@@ -203,15 +187,7 @@ class LoginAdminScreen extends StatelessWidget {
                                 color: Colors.indigo,
                                 underLine: TextDecoration.underline),
                           ),
-                          TextUtils(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              text: "إنشاء حساب مدير ",
-                              color: Colors.grey,
-                              underLine: TextDecoration.none),
-                        ],
-                      ),
-                    ),
+                         ),
                   ],
                 ),
               ),
