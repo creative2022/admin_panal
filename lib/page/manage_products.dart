@@ -1,9 +1,35 @@
 import 'package:admin_panal/widgets/component.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
-class Manage_ProductsScreen extends StatelessWidget {
+class Manage_ProductsScreen extends StatefulWidget {
   const Manage_ProductsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<Manage_ProductsScreen> createState() => _Manage_ProductsScreenState();
+}
+
+class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
+  List crafts = [];
+
+  CollectionReference usersref =
+      FirebaseFirestore.instance.collection('product');
+
+  gerData() async {
+    var val = await usersref.get();
+    val.docs.forEach((element) {
+      setState(() {
+        crafts.add(element.data());
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    gerData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +39,16 @@ class Manage_ProductsScreen extends StatelessWidget {
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
-            padding: EdgeInsets.all(200),
+            padding: EdgeInsets.all(50),
             child: DataTable2(
-                columnSpacing: 5,
+                columnSpacing: 20,
                 horizontalMargin: 5,
                 minWidth: 5,
                 columns: const [
+                  DataColumn2(
+                    label: Text('الرقم'),
+                    size: ColumnSize.L,
+                  ),
                   DataColumn2(
                     label: Text('معرف المنتج'),
                     size: ColumnSize.L,
@@ -50,13 +80,14 @@ class Manage_ProductsScreen extends StatelessWidget {
                   ),
                 ],
                 rows: List<DataRow>.generate(
-                    10,
-                    (index) => DataRow(cells: [
-                          DataCell(Text('A')),
-                          DataCell(Text('B')),
-                          DataCell(Text('D')),
-                          DataCell(Text('E')),
-                          DataCell(Text('F')),
+                    crafts.length,
+                    (i) => DataRow(cells: [
+                          DataCell(Text("${i + 1}")),
+                          DataCell(Text("${crafts[i]['postId']}")),
+                          DataCell(Text("${crafts[i]['postname']}")),
+                          DataCell(Text("${crafts[i]['description']}")),
+                          DataCell(Text("${crafts[i]['price']}")),
+                          DataCell(Image.network("${crafts[i]['postUrl']}")),
                           DataCell(Row(children: [
                             const Icon(
                               Icons.edit,
