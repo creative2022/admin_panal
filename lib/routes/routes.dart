@@ -3,8 +3,10 @@ import 'package:admin_panal/page/home.dart';
 import 'package:admin_panal/page/login.dart';
 import 'package:admin_panal/page/manage_products.dart';
 import 'package:admin_panal/page/manage_users.dart';
+import 'package:admin_panal/page/notifications.dart';
 import 'package:admin_panal/page/reports.dart';
 import 'package:admin_panal/page/signup.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
@@ -15,6 +17,7 @@ class AppRoutes {
   static const product = Routes.productScreen;
   static const login = Routes.loginScreen;
   static const signup = Routes.signupScreen;
+  static const notification = Routes.notificationScreen;
 
   static final routes = [
     GetPage(
@@ -27,7 +30,7 @@ class AppRoutes {
     ),
     GetPage(
       name: Routes.reportScreen,
-      page: () =>  ReprtsScreen(),
+      page: () => ReprtsScreen(),
     ),
     GetPage(
       name: Routes.adsScreen,
@@ -45,6 +48,10 @@ class AppRoutes {
       name: Routes.signupScreen,
       page: () => SignUpAdminScreen(),
     ),
+    GetPage(
+      name: Routes.notificationScreen,
+      page: () => NotificationsScreen(),
+    ),
   ];
 }
 
@@ -56,4 +63,5 @@ class Routes {
   static const productScreen = "/productScreen";
   static const loginScreen = "/loginScreen";
   static const signupScreen = "/signupScreen";
+  static const notificationScreen = "/notificationScreen";
 }

@@ -45,6 +45,8 @@ dependencies:
   awesome_dialog: ^2.2.1
   flutter_spinkit: ^5.1.0
   url_launcher: ^6.1.4
+  firebase_messaging: ^11.4.4
+  flutter_local_notifications: ^9.7.0
 
 dev_dependencies:
   flutter_test:

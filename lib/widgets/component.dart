@@ -17,7 +17,7 @@ Widget customText(context,
           color: color == null ? Colors.white : color),
     );
 
-deleteConfirmation(context, {required String text1, String? text2, function}) =>
+deleteConfirmation(context, {required String text1, function}) =>
     AwesomeDialog(
       context: context,
       width: 500,
@@ -28,14 +28,13 @@ deleteConfirmation(context, {required String text1, String? text2, function}) =>
       btnCancelOnPress: () {
         Get.back();
       },
-      btnOkOnPress: () {
-        Get.back();
-
+      btnOkOnPress: () async{
+       await function;
       },
     )..show();
 
 blockConfirmation(context, {required String text1, String? text2, function}) =>
-     AwesomeDialog(
+    AwesomeDialog(
       context: context,
       width: 500,
       dialogType: DialogType.QUESTION,
@@ -47,7 +46,7 @@ blockConfirmation(context, {required String text1, String? text2, function}) =>
       },
       btnOkOnPress: () {},
     )..show();
-        
+
 Widget defaultButton(
         {double width = double.infinity,
         Color background = Colors.green,

@@ -104,16 +104,21 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                           DataCell(Text("${users[i]['email']}")),
                           DataCell(Text("${users[i]['phone']}")),
                           DataCell(Text("${users[i]['password']}")),
-                          DataCell(Container(width: 70,height: 70,
-                            child: Image.network("${users[i]['photoUrl']}",fit: BoxFit.fill,)),
-                              onTap: () async {
-                                var url = "${users[i]['photoUrl']}";
-                                if (await canLaunchUrlString(url)) {
-                                  await launchUrlString(url);
-                                } else {
-                                  print('$url');
-                                }
-                              }),
+                          DataCell(
+                              Container(
+                                  width: 70,
+                                  height: 70,
+                                  child: Image.network(
+                                    "${users[i]['photoUrl']}",
+                                    fit: BoxFit.fill,
+                                  )), onTap: () async {
+                            var url = "${users[i]['photoUrl']}";
+                            if (await canLaunchUrlString(url)) {
+                              await launchUrlString(url);
+                            } else {
+                              print('$url');
+                            }
+                          }),
                           DataCell(Row(children: [
                             const Icon(
                               Icons.edit,
@@ -136,8 +141,13 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  deleteConfirmation(context,
-                                      text1: "", function: () {});
+                                  deleteConfirmation(context, text1:"${users[i]['firstname']}",
+                                      function: () {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc("${users[i]['uid']}")
+                                        .delete();
+                                  });
                                 },
                                 child: Text("حذف"),
                               ),
