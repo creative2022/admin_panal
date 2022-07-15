@@ -1,7 +1,12 @@
+import 'package:admin_panal/logic/controllers/firestore_methods.dart';
+import 'package:admin_panal/main.dart';
+import 'package:admin_panal/routes/routes.dart';
 import 'package:admin_panal/widgets/component.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class Manage_ProductsScreen extends StatefulWidget {
   const Manage_ProductsScreen({Key? key}) : super(key: key);
@@ -11,12 +16,13 @@ class Manage_ProductsScreen extends StatefulWidget {
 }
 
 class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
+  final controller = Get.put(FireStoreController());
   List crafts = [];
 
   CollectionReference usersref =
       FirebaseFirestore.instance.collection('product');
 
-  gerData() async {
+  getData() async {
     var val = await usersref.get();
     val.docs.forEach((element) {
       setState(() {
@@ -24,10 +30,9 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
       });
     });
   }
-
   @override
   void initState() {
-    gerData();
+    getData();
     super.initState();
   }
 
@@ -66,7 +71,7 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                     label: Text('السعر'),
                   ),
                   DataColumn2(
-                    size: ColumnSize.L,
+                    size: ColumnSize.M,
                     label: Text('الصورة'),
                     numeric: true,
                   ),
@@ -87,7 +92,21 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                           DataCell(Text("${crafts[i]['postname']}")),
                           DataCell(Text("${crafts[i]['description']}")),
                           DataCell(Text("${crafts[i]['price']}")),
-                          DataCell(Image.network("${crafts[i]['postUrl']}")),
+                          DataCell(
+                              Container(
+                                  width: 90,
+                                  height: 70,
+                                  child: Image.network(
+                                    "${crafts[i]['postUrl']}",
+                                    fit: BoxFit.fill,
+                                  )), onTap: () async {
+                            var url = "${crafts[i]['postUrl']}";
+                            if (await canLaunchUrlString(url)) {
+                              await launchUrlString(url);
+                            } else {
+                              print('$url');
+                            }
+                          }),
                           DataCell(Row(children: [
                             const Icon(
                               Icons.edit,
@@ -110,8 +129,13 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  deleteConfirmation(context,
-                                      text1: "", function: () {});
+                                  controller.deleteProduct(
+                                      context,
+                                      "${crafts[i]['postId']}",
+                                      "${crafts[i]['postname']}");
+                                  setState(() {
+                                    initState;
+                                  });
                                 },
                                 child: Text("حذف المنتج"),
                               ),

@@ -1,7 +1,9 @@
+import 'package:admin_panal/logic/controllers/firestore_methods.dart';
 import 'package:admin_panal/widgets/component.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -13,11 +15,12 @@ class Manage_UserScreen extends StatefulWidget {
 }
 
 class _Manage_UserScreenState extends State<Manage_UserScreen> {
+  final controller = Get.put(FireStoreController());
   List users = [];
 
   CollectionReference usersref = FirebaseFirestore.instance.collection('users');
 
-  gerData() async {
+  getUsers() async {
     var val = await usersref.get();
     val.docs.forEach((element) {
       setState(() {
@@ -28,8 +31,8 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
 
   @override
   void initState() {
-    gerData();
     super.initState();
+    getUsers();
   }
 
   @override
@@ -59,7 +62,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                     size: ColumnSize.L,
                   ),
                   DataColumn2(
-                    label: Text(' اللقب'),
+                    label: Text(' الجنس'),
                     size: ColumnSize.L,
                   ),
                   DataColumn2(
@@ -76,7 +79,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                     numeric: true,
                   ),
                   DataColumn2(
-                    size: ColumnSize.L,
+                    size: ColumnSize.M,
                     label: Text('الصورة'),
                     numeric: true,
                   ),
@@ -99,14 +102,14 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                     (i) => DataRow(cells: [
                           DataCell(Text("${i + 1}")),
                           DataCell(Text("${users[i]['uid']}")),
-                          DataCell(Text("${users[i]['firstname']}")),
-                          DataCell(Text("${users[i]['lastname']}")),
+                          DataCell(Text("${users[i]['name']}")),
+                          DataCell(Text("${users[i]['gender']}")),
                           DataCell(Text("${users[i]['email']}")),
                           DataCell(Text("${users[i]['phone']}")),
                           DataCell(Text("${users[i]['password']}")),
                           DataCell(
                               Container(
-                                  width: 70,
+                                  width: 90,
                                   height: 70,
                                   child: Image.network(
                                     "${users[i]['photoUrl']}",
@@ -141,13 +144,10 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  deleteConfirmation(context, text1:"${users[i]['firstname']}",
-                                      function: () {
-                                    FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc("${users[i]['uid']}")
-                                        .delete();
-                                  });
+                                  controller.deleteUser(
+                                      context,
+                                      "${users[i]['uid']}",
+                                      "${users[i]['name']}");
                                 },
                                 child: Text("حذف"),
                               ),
@@ -160,10 +160,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                                 width: 5,
                               ),
                               InkWell(
-                                onTap: () {
-                                  blockConfirmation(context,
-                                      text1: "", function: () {});
-                                },
+                                onTap: () {},
                                 child: Text("حظر الحساب"),
                               ),
                             ],

@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,22 +17,7 @@ Widget customText(context,
           fontSize: fontSize ?? 16,
           color: color == null ? Colors.white : color),
     );
-
-deleteConfirmation(context, {required String text1, function}) =>
-    AwesomeDialog(
-      context: context,
-      width: 500,
-      dialogType: DialogType.QUESTION,
-      animType: AnimType.SCALE,
-      title: ' هل تريد تأكيد الحذف',
-      desc: 'حذف ${text1}',
-      btnCancelOnPress: () {
-        Get.back();
-      },
-      btnOkOnPress: () async{
-       await function;
-      },
-    )..show();
+    
 
 blockConfirmation(context, {required String text1, String? text2, function}) =>
     AwesomeDialog(

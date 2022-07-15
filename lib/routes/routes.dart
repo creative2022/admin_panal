@@ -1,3 +1,4 @@
+import 'package:admin_panal/logic/bindings/firestore_binding.dart';
 import 'package:admin_panal/page/Manage_ads.dart';
 import 'package:admin_panal/page/home.dart';
 import 'package:admin_panal/page/login.dart';
@@ -6,7 +7,6 @@ import 'package:admin_panal/page/manage_users.dart';
 import 'package:admin_panal/page/notifications.dart';
 import 'package:admin_panal/page/reports.dart';
 import 'package:admin_panal/page/signup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
