@@ -1,7 +1,8 @@
 import 'package:admin_panal/page/Manage_ads.dart';
+import 'package:admin_panal/page/manage_admin.dart';
 import 'package:admin_panal/page/manage_products.dart';
+import 'package:admin_panal/page/manage_creatives.dart';
 import 'package:admin_panal/page/manage_users.dart';
-import 'package:admin_panal/page/notifications.dart';
 import 'package:admin_panal/page/reports.dart';
 import 'package:admin_panal/page/signup.dart';
 import 'package:admin_panal/routes/routes.dart';
@@ -16,18 +17,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget _selectedScreen = const Manage_UserScreen();
+  Widget _selectedScreen = const Manage_CreativeScreen();
 
   currentScreen(item) {
     switch (item.route) {
-      case AppRoutes.users:
+      case AppRoutes.cretive:
         setState(() {
-          _selectedScreen = const Manage_UserScreen();
+          _selectedScreen = const Manage_CreativeScreen();
         });
         break;
       case AppRoutes.ads:
         setState(() {
-          _selectedScreen = Manage_AdsScreen();
+          _selectedScreen =  Manage_AdsScreen();
         });
         break;
       case AppRoutes.product:
@@ -45,9 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedScreen = SignUpAdminScreen();
         });
         break;
-      case AppRoutes.notification:
+      case AppRoutes.admin:
         setState(() {
-          _selectedScreen = NotificationsScreen();
+          _selectedScreen = const AdminScreen();
+        });
+        break;
+      case AppRoutes.users:
+        setState(() {
+          _selectedScreen = const Manage_UserScreen();
         });
         break;
     }
@@ -60,12 +66,16 @@ class _HomeScreenState extends State<HomeScreen> {
       home: AdminScaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: Center(child: const Text('Admin Panel')),
+            title: const Center(child: Text('Admin Panel')),
           ),
           sideBar: SideBar(
               items: const [
                 AdminMenuItem(
-                  title: 'ٌإدارة المسستخدمين',
+                  title: 'ٌإدارة الحرفيين',
+                  route: AppRoutes.cretive,
+                  icon: Icons.person,
+                ), AdminMenuItem(
+                  title: 'ٌإدارة المستخدمين',
                   route: AppRoutes.users,
                   icon: Icons.person,
                 ),
@@ -87,9 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     route: AppRoutes.signup,
                     icon: Icons.account_box),
                 AdminMenuItem(
-                  title: 'الإشعارات',
-                  route: AppRoutes.notification,
-                  icon: Icons.notifications,
+                  title: 'إدارة المدراء',
+                  route: AppRoutes.admin,
+                  icon: Icons.admin_panel_settings,
                 )
               ],
               selectedRoute: AppRoutes.home,

@@ -106,7 +106,7 @@ class LoginAdminScreen extends StatelessWidget {
                                     }
                                   },
                                   decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.lock),
+                                    prefixIcon: const Icon(Icons.lock),
                                     suffixIcon: IconButton(
                                       onPressed: () {
                                         controller.visibilty();

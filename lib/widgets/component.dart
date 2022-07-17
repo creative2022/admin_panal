@@ -1,7 +1,4 @@
-import 'dart:html';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,11 +10,8 @@ Widget customText(context,
         FontWeight? fontWeight}) =>
     Text(
       upperCase ? text.toUpperCase() : text,
-      style: TextStyle(
-          fontSize: fontSize ?? 16,
-          color: color == null ? Colors.white : color),
+      style: TextStyle(fontSize: fontSize ?? 16, color: color ?? Colors.white),
     );
-    
 
 blockConfirmation(context, {required String text1, String? text2, function}) =>
     AwesomeDialog(
@@ -26,7 +20,7 @@ blockConfirmation(context, {required String text1, String? text2, function}) =>
       dialogType: DialogType.QUESTION,
       animType: AnimType.SCALE,
       title: ' هل تريد تأكيد الحظر',
-      desc: 'حظر المستخدم ${text1}',
+      desc: 'حظر المستخدم $text1',
       btnCancelOnPress: () {
         Get.back();
       },
@@ -60,3 +54,74 @@ Widget defaultButton(
             : Icon(icon),
       ),
     );
+
+class AuthTextFromField extends StatelessWidget {
+  // final TextEditingController controller;
+  final String val;
+  final  void Function(String?) onsave;
+  final bool obscureText;
+  final Function validator;
+  final Widget prefixIcon;
+  final Widget suffixIcon;
+  final String hintText;
+  final TextInputType keyboardType;
+  const AuthTextFromField({
+    required this.val,
+    required this.onsave,
+    // required this.controller,
+    required this.obscureText,
+    required this.validator,
+    required this.prefixIcon,
+    required this.suffixIcon,
+    required this.hintText,
+    Key? key,
+    required this.keyboardType,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+      child: TextFormField(
+        onSaved: onsave,
+        initialValue: val,
+        // controller: controller,
+        obscureText: obscureText,
+        cursorColor: Colors.black,
+        keyboardType: keyboardType,
+        validator: (value) => validator(value),
+        style: const TextStyle(
+          color: Colors.black,
+        ),
+        decoration: InputDecoration(
+          fillColor: Colors.grey.shade200,
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          hintText: hintText,
+          hintStyle: const TextStyle(
+            color: Colors.black45,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    );
+  }
+}

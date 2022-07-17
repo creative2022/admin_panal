@@ -21,15 +21,15 @@ class ReprtsScreen extends StatelessWidget {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-                "Total ${name}",
-                style: TextStyle(
+                "Total $name",
+                style: const TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
+                children: const [
                   Text("3"),
                   Icon(Icons.show_chart),
                 ],

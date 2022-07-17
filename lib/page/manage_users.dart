@@ -1,10 +1,10 @@
 import 'package:admin_panal/logic/controllers/firestore_methods.dart';
 import 'package:admin_panal/widgets/component.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Manage_UserScreen extends StatefulWidget {
@@ -15,13 +15,12 @@ class Manage_UserScreen extends StatefulWidget {
 }
 
 class _Manage_UserScreenState extends State<Manage_UserScreen> {
-  final controller = Get.put(FireStoreController());
   List users = [];
 
   CollectionReference usersref = FirebaseFirestore.instance.collection('users');
 
   getUsers() async {
-    var val = await usersref.get();
+    var val = await usersref.where("type",isEqualTo: "user").get();
     val.docs.forEach((element) {
       setState(() {
         users.add(element.data());
@@ -51,7 +50,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                 columns: const [
                   DataColumn2(
                     label: Text('الرقم'),
-                    size: ColumnSize.L,
+                    size: ColumnSize.S,
                   ),
                   DataColumn2(
                     label: Text('معرف الحساب'),
@@ -59,19 +58,11 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                   ),
                   DataColumn2(
                     label: Text('الإسم'),
-                    size: ColumnSize.L,
-                  ),
-                  DataColumn2(
-                    label: Text(' الجنس'),
-                    size: ColumnSize.L,
+                    size: ColumnSize.M,
                   ),
                   DataColumn2(
                     size: ColumnSize.L,
                     label: Text('الإيميل'),
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.L,
-                    label: Text('رقم الهاتف'),
                   ),
                   DataColumn2(
                     size: ColumnSize.L,
@@ -81,10 +72,6 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                   DataColumn2(
                     size: ColumnSize.M,
                     label: Text('الصورة'),
-                    numeric: true,
-                  ),
-                  DataColumn(
-                    label: Text(''),
                     numeric: true,
                   ),
                   DataColumn(
@@ -103,9 +90,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                           DataCell(Text("${i + 1}")),
                           DataCell(Text("${users[i]['uid']}")),
                           DataCell(Text("${users[i]['name']}")),
-                          DataCell(Text("${users[i]['gender']}")),
                           DataCell(Text("${users[i]['email']}")),
-                          DataCell(Text("${users[i]['phone']}")),
                           DataCell(Text("${users[i]['password']}")),
                           DataCell(
                               Container(
@@ -138,31 +123,59 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                           ])),
                           DataCell(Row(
                             children: [
-                              Icon(Icons.delete, color: Colors.red, size: 15),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  controller.deleteUser(
-                                      context,
-                                      "${users[i]['uid']}",
-                                      "${users[i]['name']}");
-                                },
-                                child: Text("حذف"),
-                              ),
-                            ],
-                          )),
-                          DataCell(Row(
-                            children: [
                               Icon(Icons.block, color: Colors.red, size: 15),
                               SizedBox(
                                 width: 5,
                               ),
                               InkWell(
-                                onTap: () {},
-                                child: Text("حظر الحساب"),
-                              ),
+                                onTap: () { if ("${users[i]['blocked']}" == "yes") {
+                                      AwesomeDialog(
+                                        context: context,
+                                        width: 500,
+                                        dialogType: DialogType.QUESTION,
+                                        animType: AnimType.SCALE,
+                                        title: ' هل تريد إلغاء الحظر',
+                                        desc:
+                                            'إلغاء حظر المستخدم ${users[i]['name']}',
+                                        btnCancelOnPress: () {
+                                          Get.back();
+                                        },
+                                        btnOkOnPress: () async {
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc("${users[i]['uid']}")
+                                              .update({
+                                            'blocked': "no",
+                                          });
+                                        },
+                                      ).show();
+                                    } else if ("${users[i]['blocked']}" ==
+                                        "no") {
+                                      AwesomeDialog(
+                                        context: context,
+                                        width: 500,
+                                        dialogType: DialogType.QUESTION,
+                                        animType: AnimType.SCALE,
+                                        title: ' هل تريد تأكيد الحظر',
+                                        desc:
+                                            'حظر المستخدم ${users[i]['name']}',
+                                        btnCancelOnPress: () {
+                                          Get.back();
+                                        },
+                                        btnOkOnPress: () async {
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc("${users[i]['uid']}")
+                                              .update({
+                                            'blocked': "yes",
+                                          });
+                                        },
+                                      ).show();
+                                    }
+                                  },
+                                  child: "${users[i]['blocked']}" == "no"
+                                      ? Text("حظر الحساب")
+                                      : Text("إلغاء الحظر")),
                             ],
                           )),
                         ]))),

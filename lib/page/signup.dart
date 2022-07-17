@@ -1,5 +1,4 @@
 import 'package:admin_panal/logic/controllers/auth_controller.dart';
-import 'package:admin_panal/page/login.dart';
 import 'package:admin_panal/utils/app_colors.dart';
 import 'package:admin_panal/utils/my_string.dart';
 import 'package:admin_panal/utils/text_utils.dart';
@@ -61,7 +60,7 @@ class SignUpAdminScreen extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(color: Colors.grey[200]),
                           child: Padding(
-                            padding: EdgeInsets.only(left: 8.0),
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: TextFormField(
                                 controller: usernameConrtoller,
                                 obscureText: false,
@@ -75,7 +74,7 @@ class SignUpAdminScreen extends StatelessWidget {
                                     return null;
                                   }
                                 },
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   prefixIcon: Icon(Icons.person),
                                   suffixIcon: Text(""),
                                   hintText: "اسم المستخدم",
@@ -92,7 +91,7 @@ class SignUpAdminScreen extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(color: Colors.grey[200]),
                           child: Padding(
-                            padding: EdgeInsets.only(left: 8.0),
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: TextFormField(
                                 controller: emailController,
                                 obscureText: false,
@@ -106,7 +105,7 @@ class SignUpAdminScreen extends StatelessWidget {
                                     return null;
                                   }
                                 },
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   prefixIcon: Icon(Icons.email),
                                   suffixIcon: Text(""),
                                   hintText: "الأيميل",
@@ -123,7 +122,7 @@ class SignUpAdminScreen extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(color: Colors.grey[200]),
                           child: Padding(
-                            padding: EdgeInsets.only(left: 8.0),
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: GetBuilder<AuthController>(
                               builder: (_) {
                                 return TextFormField(
@@ -142,17 +141,17 @@ class SignUpAdminScreen extends StatelessWidget {
                                       }
                                     },
                                     decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.lock),
+                                      prefixIcon: const Icon(Icons.lock),
                                       suffixIcon: IconButton(
                                         onPressed: () {
                                           controller.visibilty();
                                         },
                                         icon: controller.isvisibilty
-                                            ? Icon(
+                                            ? const Icon(
                                                 Icons.visibility,
                                                 color: AppColors.lightblue,
                                               )
-                                            : Icon(
+                                            : const Icon(
                                                 Icons.visibility_off,
                                                 color: AppColors.blackshade,
                                               ),
@@ -174,7 +173,7 @@ class SignUpAdminScreen extends StatelessWidget {
                               decoration:
                                   BoxDecoration(color: Colors.grey[200]),
                               child: Padding(
-                                padding: EdgeInsets.only(left: 8.0),
+                                padding: const EdgeInsets.only(left: 8.0),
                                 child: GetBuilder<AuthController>(
                                   builder: (_) {
                                     return TextFormField(
@@ -190,17 +189,17 @@ class SignUpAdminScreen extends StatelessWidget {
                                           }
                                         },
                                         decoration: InputDecoration(
-                                          prefixIcon: Icon(Icons.lock),
+                                          prefixIcon: const Icon(Icons.lock),
                                           suffixIcon: IconButton(
                                             onPressed: () {
                                               controller.visibilty();
                                             },
                                             icon: controller.isvisibilty
-                                                ? Icon(
+                                                ? const Icon(
                                                     Icons.visibility,
                                                     color: AppColors.lightblue,
                                                   )
-                                                : Icon(
+                                                : const Icon(
                                                     Icons.visibility_off,
                                                     color: AppColors.blackshade,
                                                   ),

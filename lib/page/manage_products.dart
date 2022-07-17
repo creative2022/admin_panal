@@ -1,6 +1,5 @@
 import 'package:admin_panal/logic/controllers/firestore_methods.dart';
-import 'package:admin_panal/main.dart';
-import 'package:admin_panal/routes/routes.dart';
+import 'package:admin_panal/utils/my_string.dart';
 import 'package:admin_panal/widgets/component.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -12,24 +11,33 @@ class Manage_ProductsScreen extends StatefulWidget {
   const Manage_ProductsScreen({Key? key}) : super(key: key);
 
   @override
-  State<Manage_ProductsScreen> createState() => _Manage_ProductsScreenState();
+  State<Manage_ProductsScreen> createState() => Manage_ProductsScreenState();
 }
 
-class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
-  final controller = Get.put(FireStoreController());
-  List crafts = [];
+class Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
+  final TextEditingController prodctNameController = TextEditingController();
 
-  CollectionReference usersref =
+  GlobalKey<FormState> formstate = new GlobalKey<FormState>();
+  final controller = Get.put(FireStoreController());
+
+  String? name;
+  String? desc;
+  String? price;
+
+  final List crafts = [];
+
+  CollectionReference productref =
       FirebaseFirestore.instance.collection('product');
 
   getData() async {
-    var val = await usersref.get();
-    val.docs.forEach((element) {
+    var val = await productref.get();
+    for (var element in val.docs) {
       setState(() {
         crafts.add(element.data());
       });
-    });
+    }
   }
+
   @override
   void initState() {
     getData();
@@ -44,7 +52,7 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
-            padding: EdgeInsets.all(50),
+            padding: const EdgeInsets.all(50),
             child: DataTable2(
                 columnSpacing: 20,
                 horizontalMargin: 5,
@@ -93,7 +101,7 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                           DataCell(Text("${crafts[i]['description']}")),
                           DataCell(Text("${crafts[i]['price']}")),
                           DataCell(
-                              Container(
+                              SizedBox(
                                   width: 90,
                                   height: 70,
                                   child: Image.network(
@@ -104,7 +112,7 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                             if (await canLaunchUrlString(url)) {
                               await launchUrlString(url);
                             } else {
-                              print('$url');
+                              print(url);
                             }
                           }),
                           DataCell(Row(children: [
@@ -114,7 +122,138 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                               size: 15,
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title:
+                                              const Text('تحديث بيانات المنتج'),
+                                          content: Form(
+                                            key: formstate,
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  AuthTextFromField(
+                                                      onsave: (value) {
+                                                        name = value;
+                                                      },
+                                                      val:
+                                                          "${crafts[i]['postname']}",
+                                                      obscureText: false,
+                                                      validator: (Value) {
+                                                        if (Value.toString()
+                                                                .length <=
+                                                            1) {
+                                                          return "يجب أن لا يقل الأسم عن حرف";
+                                                        } else if (RegExp(
+                                                                validationName)
+                                                            .hasMatch(Value)) {
+                                                          return 'يجب أن لايحتوي الأسم على رقم او رمز';
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                      prefixIcon:
+                                                         const Icon(Icons.edit_note),
+                                                      suffixIcon: Text(""),
+                                                      hintText: " أسم المنتج",
+                                                      keyboardType:
+                                                          TextInputType.text),
+                                                  AuthTextFromField(
+                                                      onsave: (value) {
+                                                        desc = value;
+                                                      },
+                                                      val:
+                                                          "${crafts[i]['description']}",
+                                                      // controller:
+                                                      //     productDescriptionController,
+                                                      obscureText: false,
+                                                      validator: (Value) {
+                                                        if (Value.length > 50) {
+                                                          return " الوصف لايمكن ان يكون اكبر من 50 حرف";
+                                                        }
+                                                        if (Value.length <= 1) {
+                                                          return "الوصف  لايمكن ان يكون اصغر من حرف";
+                                                        }
+                                                        return null;
+                                                      },
+                                                      prefixIcon:const Icon(
+                                                          Icons.description),
+                                                      suffixIcon:const Text(""),
+                                                      hintText: "وصف النتج ",
+                                                      keyboardType:
+                                                          TextInputType.text),
+                                                  AuthTextFromField(
+                                                      onsave: (value) {
+                                                        price = value;
+                                                      },
+                                                      val:
+                                                          "${crafts[i]['price']}",
+                                                      // controller:
+                                                      //     productPriceController,
+                                                      obscureText: false,
+                                                      validator: (Value) {
+                                                        if (Value.length == 0) {
+                                                          return 'الرجاء إدخال السعر  ';
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                      prefixIcon: Icon(
+                                                          Icons.price_check),
+                                                      suffixIcon: Text(""),
+                                                      hintText: "السعر ",
+                                                      keyboardType:
+                                                          TextInputType.number),
+                                                ]),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () async {
+                                                if (formstate.currentState!
+                                                    .validate()) {
+                                                  {
+                                                    try {
+                                                      formstate.currentState!
+                                                          .save();
+                                                      if (formstate
+                                                          .currentState!
+                                                          .validate()) {
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'product')
+                                                            .doc(
+                                                                "${crafts[i]['postId']}")
+                                                            .update({
+                                                          'postname': name,
+                                                          'description': desc,
+                                                          'price': price,
+                                                        });
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      }
+                                                    } catch (e) {
+                                                      print(e);
+                                                    }
+                                                  }
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                              child: const Text('تحديث'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('رجوع'),
+                                            ),
+                                          ],
+                                        ));
+                              },
                               child: customText(context,
                                   text: 'تعديل',
                                   color: Colors.blueGrey,
@@ -123,8 +262,9 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                           ])),
                           DataCell(Row(
                             children: [
-                              Icon(Icons.delete, color: Colors.red, size: 15),
-                              SizedBox(
+                              const Icon(Icons.delete,
+                                  color: Colors.red, size: 15),
+                              const SizedBox(
                                 width: 5,
                               ),
                               InkWell(
@@ -137,7 +277,7 @@ class _Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                                     initState;
                                   });
                                 },
-                                child: Text("حذف المنتج"),
+                                child: const Text("حذف المنتج"),
                               ),
                             ],
                           )),

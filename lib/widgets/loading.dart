@@ -9,7 +9,7 @@ class Loading extends StatelessWidget {
     return Center(
           child: Container(
         color:const Color.fromRGBO(255, 255, 255, 1),
-        child: SpinKitFadingCircle(
+        child: const SpinKitFadingCircle(
           color: Colors.black,
           size: 30,
         )

@@ -23,7 +23,7 @@ class AuthController extends GetxController {
     required String password,
   }) async {
     try {
-      Get.to(Loading());
+      Get.to(const Loading());
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -58,7 +58,7 @@ class AuthController extends GetxController {
     required String username,
   }) async {
     try {
-       Get.to(Loading());
+       Get.to(const Loading());
       UserCredential cred = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -66,7 +66,7 @@ class AuthController extends GetxController {
      
 
      
-      AdminModel _user = AdminModel(
+      AdminModel user = AdminModel(
         uid: cred.user!.uid,
         password: password,
         email: email,
@@ -76,7 +76,7 @@ class AuthController extends GetxController {
       await _firestore
           .collection("admin")
           .doc(cred.user!.uid)
-          .set(_user.toJson());
+          .set(user.toJson());
 
       update();
  
@@ -113,7 +113,7 @@ class AuthController extends GetxController {
         'Error!',
         error.toString(),
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Color.fromARGB(255, 139, 190, 140),
+        backgroundColor: const Color.fromARGB(255, 139, 190, 140),
         colorText: Colors.white,
       );
       
