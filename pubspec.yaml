@@ -40,6 +40,7 @@ dependencies:
   firebase_auth: ^3.4.1
   cloud_firestore: ^3.2.1
   firebase_storage: ^10.3.1
+  cached_network_image: ^3.2.1
   get: ^4.6.5
   flutter_admin_scaffold: ^1.1.1
   awesome_dialog: ^2.2.1
