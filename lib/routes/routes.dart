@@ -54,7 +54,7 @@ class AppRoutes {
       page: () =>  Manage_CreativeScreen(),
     ), GetPage(
       name: Routes.usersScreen,
-      page: () => const Manage_UserScreen(),
+      page: () =>  Manage_UserScreen(),
     ),
   ];
 }

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 class FireStoreController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   Future<String> deleteProduct(context, String postId, String name) async {
     String res = "حدث خطأ غير متوقع";
     try {

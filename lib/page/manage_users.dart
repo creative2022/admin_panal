@@ -1,5 +1,3 @@
-import 'package:admin_panal/logic/controllers/firestore_methods.dart';
-import 'package:admin_panal/widgets/component.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -8,179 +6,158 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Manage_UserScreen extends StatefulWidget {
-  const Manage_UserScreen({Key? key}) : super(key: key);
+  Manage_UserScreen({Key? key}) : super(key: key);
 
   @override
-  State<Manage_UserScreen> createState() => _Manage_UserScreenState();
+  State<Manage_UserScreen>  createState() => _Manage_UserScreenState();
+  
+  
 }
 
 class _Manage_UserScreenState extends State<Manage_UserScreen> {
-  List users = [];
-
-  CollectionReference usersref = FirebaseFirestore.instance.collection('users');
-
-  getUsers() async {
-    var val = await usersref.where("type",isEqualTo: "user").get();
-    val.docs.forEach((element) {
-      setState(() {
-        users.add(element.data());
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getUsers();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: EdgeInsets.all(50),
-            child: DataTable2(
-                columnSpacing: 20,
-                horizontalMargin: 20,
-                minWidth: 5,
-                columns: const [
-                  DataColumn2(
-                    label: Text('الرقم'),
-                    size: ColumnSize.S,
-                  ),
-                  DataColumn2(
-                    label: Text('معرف الحساب'),
-                    size: ColumnSize.L,
-                  ),
-                  DataColumn2(
-                    label: Text('الإسم'),
-                    size: ColumnSize.M,
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.L,
-                    label: Text('الإيميل'),
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.L,
-                    label: Text('كلمة المرور'),
-                    numeric: true,
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.M,
-                    label: Text('الصورة'),
-                    numeric: true,
-                  ),
-                  DataColumn(
-                    label: Text(''),
-                    numeric: true,
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.L,
-                    label: Text(''),
-                    numeric: true,
-                  ),
-                ],
-                rows: List<DataRow>.generate(
-                    users.length,
-                    (i) => DataRow(cells: [
-                          DataCell(Text("${i + 1}")),
-                          DataCell(Text("${users[i]['uid']}")),
-                          DataCell(Text("${users[i]['name']}")),
-                          DataCell(Text("${users[i]['email']}")),
-                          DataCell(Text("${users[i]['password']}")),
-                          DataCell(
-                              Container(
-                                  width: 90,
-                                  height: 70,
-                                  child: Image.network(
-                                    "${users[i]['photoUrl']}",
-                                    fit: BoxFit.fill,
-                                  )), onTap: () async {
-                            var url = "${users[i]['photoUrl']}";
-                            if (await canLaunchUrlString(url)) {
-                              await launchUrlString(url);
-                            } else {
-                              print('$url');
-                            }
-                          }),
-                          DataCell(Row(children: [
-                            const Icon(
-                              Icons.edit,
-                              color: Colors.yellow,
-                              size: 15,
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: customText(context,
-                                  text: 'تعديل',
-                                  color: Colors.blueGrey,
-                                  upperCase: false),
-                            )
-                          ])),
-                          DataCell(Row(
-                            children: [
-                              Icon(Icons.block, color: Colors.red, size: 15),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              InkWell(
-                                onTap: () { if ("${users[i]['blocked']}" == "yes") {
-                                      AwesomeDialog(
-                                        context: context,
-                                        width: 500,
-                                        dialogType: DialogType.QUESTION,
-                                        animType: AnimType.SCALE,
-                                        title: ' هل تريد إلغاء الحظر',
-                                        desc:
-                                            'إلغاء حظر المستخدم ${users[i]['name']}',
-                                        btnCancelOnPress: () {
-                                          Get.back();
-                                        },
-                                        btnOkOnPress: () async {
-                                          await FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc("${users[i]['uid']}")
-                                              .update({
-                                            'blocked': "no",
-                                          });
-                                        },
-                                      ).show();
-                                    } else if ("${users[i]['blocked']}" ==
-                                        "no") {
-                                      AwesomeDialog(
-                                        context: context,
-                                        width: 500,
-                                        dialogType: DialogType.QUESTION,
-                                        animType: AnimType.SCALE,
-                                        title: ' هل تريد تأكيد الحظر',
-                                        desc:
-                                            'حظر المستخدم ${users[i]['name']}',
-                                        btnCancelOnPress: () {
-                                          Get.back();
-                                        },
-                                        btnOkOnPress: () async {
-                                          await FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc("${users[i]['uid']}")
-                                              .update({
-                                            'blocked': "yes",
-                                          });
-                                        },
-                                      ).show();
-                                    }
-                                  },
-                                  child: "${users[i]['blocked']}" == "no"
-                                      ? Text("حظر الحساب")
-                                      : Text("إلغاء الحظر")),
-                            ],
-                          )),
-                        ]))),
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(50.0),
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .where("type", isEqualTo: "user")
+            .snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            itemCount: 1,
+            itemBuilder: (context, i) => Material(
+      
+          child:  Directionality(
+            textDirection: TextDirection.rtl,
+              child: DataTable(
+                    columns: const [
+                        DataColumn(
+                        label: Text('الرقم'),
+                      ),
+                      DataColumn(
+                        label: Text('معرف الحساب'),
+                      ),
+                      DataColumn(
+                        label: Text('الإسم'),
+                      ),
+                      DataColumn2(
+                        label: Text('الإيميل'),
+                      ),
+                      DataColumn(
+                        label: Text('كلمة المرور'),
+                      ),
+                      DataColumn(
+                        label: Text('الصورة'),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Text(''),
+                        numeric: true,
+                      ),
+                    ],
+                    rows: List<DataRow>.generate(
+                        snapshot.data!.docs.length,
+                        (i) => DataRow(cells: [
+                           DataCell(Text("${i+1}")), 
+                              DataCell(Text(
+                                  snapshot.data!.docs[i].data()['uid'].toString())),
+                              DataCell(Text(snapshot.data!.docs[i]
+                                  .data()['name']
+                                  .toString())),
+                              DataCell(Text(snapshot.data!.docs[i]
+                                  .data()['email']
+                                  .toString())),
+                              DataCell(Text(snapshot.data!.docs[i]
+                                  .data()['password']
+                                  .toString())),
+                              DataCell(
+                                  Container(
+                                      width: 90,
+                                      height: 70,
+                                      child: Image.network(
+                                        snapshot.data!.docs[i].data()['photoUrl'],
+                                        fit: BoxFit.fill,
+                                      )), onTap: () async {
+                                var url = ['photoUrl'].toString();
+                                if (await canLaunchUrlString(url)) {
+                                  await launchUrlString(url);
+                                } else {
+                                  print('$url');
+                                }
+                              }),
+                               DataCell(Row(
+                              children: [
+                                Icon(Icons.block, color: Colors.red, size: 15),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      if ( snapshot.data!.docs[i].data()['blocked'].toString() == "yes") {
+                                        AwesomeDialog(
+                                          context: context,
+                                          width: 500,
+                                          dialogType: DialogType.QUESTION,
+                                          animType: AnimType.SCALE,
+                                          title: ' هل تريد إلغاء الحظر',
+                                          desc:
+                                              'إلغاء حظر المستخدم'+ snapshot.data!.docs[i].data()['name'].toString(),
+                                          btnCancelOnPress: () {
+                                            Get.back();
+                                          },
+                                          btnOkOnPress: () async {
+                                            await FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(snapshot.data!.docs[i].data()['uid'].toString())
+                                                .update({
+                                              'blocked': "no",
+                                            });
+                                          },
+                                        ).show();
+                                      } else if (snapshot.data!.docs[i].data()['blocked'].toString() ==
+                                          "no") {
+                                        AwesomeDialog(
+                                          context: context,
+                                          width: 500,
+                                          dialogType: DialogType.QUESTION,
+                                          animType: AnimType.SCALE,
+                                          title: ' هل تريد تأكيد الحظر',
+                                          desc:
+                                              'حظر المستخدم '+snapshot.data!.docs[i].data()['name'].toString(),
+                                          btnCancelOnPress: () {
+                                            Get.back();
+                                          },
+                                          btnOkOnPress: () async {
+                                            await FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(snapshot.data!.docs[i].data()['uid'].toString())
+                                                .update({
+                                              'blocked': "yes",
+                                            });
+                                          },
+                                        ).show();
+                                      }
+                                    },
+                                    child: snapshot.data!.docs[i].data()['blocked'].toString() == "no"
+                                        ? Text("حظر الحساب")
+                                        : Text("إلغاء الحظر")),
+                              ],
+                            )),
+                            ]))),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
