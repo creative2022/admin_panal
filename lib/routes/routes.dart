@@ -5,6 +5,7 @@ import 'package:admin_panal/page/manage_admin.dart';
 import 'package:admin_panal/page/manage_products.dart';
 import 'package:admin_panal/page/manage_creatives.dart';
 import 'package:admin_panal/page/manage_users.dart';
+import 'package:admin_panal/page/notifications.dart';
 import 'package:admin_panal/page/reports.dart';
 import 'package:admin_panal/page/signup.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class AppRoutes {
   static const signup = Routes.signupScreen;
   static const admin = Routes.adminScreen;
   static const cretive = Routes.cretiveScreen;
+  static const notification = Routes.notificationScreen;
 
   static final routes = [
     GetPage(
@@ -56,6 +58,10 @@ class AppRoutes {
       name: Routes.usersScreen,
       page: () =>  Manage_UserScreen(),
     ),
+     GetPage(
+      name: Routes.notificationScreen,
+      page: () =>  NotificationScreen(),
+    ),
   ];
 }
 
@@ -69,4 +75,5 @@ class Routes {
   static const signupScreen = "/signupScreen";
   static const adminScreen = "/adminScreen";
   static const cretiveScreen = "/cretiveScreen";
+  static const notificationScreen = "/notificationScreen";
 }

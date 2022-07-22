@@ -18,7 +18,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(50.0),
+      padding: const EdgeInsets.only(top: 60.0,right: 30.0,left: 40.0),
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('users')
@@ -40,6 +40,8 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
           child:  Directionality(
             textDirection: TextDirection.rtl,
               child: DataTable(
+                columnSpacing: 8,
+                border: TableBorder.all(color:Colors.black,width: 1),
                     columns: const [
                         DataColumn(
                         label: Text('الرقم'),
@@ -50,7 +52,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                       DataColumn(
                         label: Text('الإسم'),
                       ),
-                      DataColumn2(
+                      DataColumn(
                         label: Text('الإيميل'),
                       ),
                       DataColumn(
@@ -58,11 +60,9 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                       ),
                       DataColumn(
                         label: Text('الصورة'),
-                        numeric: true,
                       ),
                       DataColumn(
                         label: Text(''),
-                        numeric: true,
                       ),
                     ],
                     rows: List<DataRow>.generate(
@@ -88,7 +88,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                                         snapshot.data!.docs[i].data()['photoUrl'],
                                         fit: BoxFit.fill,
                                       )), onTap: () async {
-                                var url = ['photoUrl'].toString();
+                                var url =snapshot.data!.docs[i].data()['photoUrl'].toString();
                                 if (await canLaunchUrlString(url)) {
                                   await launchUrlString(url);
                                 } else {

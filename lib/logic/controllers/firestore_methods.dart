@@ -29,7 +29,7 @@ class FireStoreController extends GetxController {
             colorText: Colors.white,
           ).show();
         },
-      );
+      ).show();
     } catch (err) {
       res = err.toString();
       Get.snackbar(

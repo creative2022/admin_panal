@@ -3,6 +3,7 @@ import 'package:admin_panal/page/manage_admin.dart';
 import 'package:admin_panal/page/manage_products.dart';
 import 'package:admin_panal/page/manage_creatives.dart';
 import 'package:admin_panal/page/manage_users.dart';
+import 'package:admin_panal/page/notifications.dart';
 import 'package:admin_panal/page/reports.dart';
 import 'package:admin_panal/page/signup.dart';
 import 'package:admin_panal/routes/routes.dart';
@@ -56,6 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedScreen =  Manage_UserScreen();
         });
         break;
+      case AppRoutes.notification:
+        setState(() {
+          _selectedScreen =  NotificationScreen();
+        });
+        break;
     }
   }
 
@@ -100,6 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: 'إدارة المدراء',
                   route: AppRoutes.admin,
                   icon: Icons.admin_panel_settings,
+                ),
+                 AdminMenuItem(
+                  title: 'الإشعارات',
+                  route: AppRoutes.notification,
+                  icon: Icons.notifications_active_outlined,
                 )
               ],
               selectedRoute: AppRoutes.home,
