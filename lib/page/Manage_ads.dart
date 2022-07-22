@@ -1,107 +1,85 @@
+import 'package:admin_panal/logic/controllers/firestore_methods.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Manage_AdsScreen extends StatefulWidget {
-  Manage_AdsScreen({Key? key}) : super(key: key);
+  const Manage_AdsScreen({Key? key}) : super(key: key);
 
   @override
-  State<Manage_AdsScreen> createState() => _Manage_AdsScreenState();
+  State<Manage_AdsScreen> createState() => Manage_AdsScreenState();
 }
 
-class _Manage_AdsScreenState extends State<Manage_AdsScreen> {
-  CollectionReference usersref = FirebaseFirestore.instance.collection('ads');
-  List ads = [];
-  List users = [];
-  getAds() async {
-    var val = await usersref.get();
-    val.docs.forEach((element) {
-      setState(() {
-        ads.add(element.data());
-      });
-    });
-  }
+class Manage_AdsScreenState extends State<Manage_AdsScreen> {
+  final TextEditingController prodctNameController = TextEditingController();
 
-  getUsers() async {
-    var val = await usersref.get();
-    val.docs.forEach((element) {
-      setState(() {
-        users.add(element.data());
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getAds();
-    getUsers();
-  }
+  final controller = Get.put(FireStoreController());
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: EdgeInsets.all(50),
-            child: DataTable2(
-                columnSpacing: 20,
-                horizontalMargin: 20,
-                minWidth: 5,
-                columns: const [
-                  DataColumn2(
-                    label: Text('الرقم'),
-                    size: ColumnSize.L,
-                  ),
-                   DataColumn2(
-                    label: Text('معرف الحساب'),
-                    size: ColumnSize.L,
-                  ),
-                  DataColumn2(
-                    label: Text('عنوان الاعلان '),
-                    size: ColumnSize.L,
-                  ),
-                  DataColumn2(
-                    label: Text('الوصف'),
-                    size: ColumnSize.L,
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.M,
-                    label: Text('الصورة'),
-                    numeric: true,
-                  ),
-                  DataColumn(
-                    label: Text(''),
-                    numeric: true,
-                  ),
-                  DataColumn2(
-                    size: ColumnSize.L,
-                    label: Text(''),
-                    numeric: true,
-                  ),
-                ],
-                rows: List<DataRow>.generate(
-                    ads.length,
-                    (i) => DataRow(cells: [
+    return Padding(
+      padding: const EdgeInsets.only(top: 60.0, right: 30.0, left: 40.0),
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('ads').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            itemCount: 1,
+            itemBuilder: (context, i) => Material(
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: DataTable(
+                    columnSpacing: 8,
+                    border: TableBorder.all(color: Colors.black, width: 0.5),
+                    columns: const [
+                      DataColumn(
+                        label: Text('الرقم'),
+                      ),
+                      DataColumn(
+                        label: Text('معرف الإعلان'),
+                      ),
+                      DataColumn(
+                        label: Text('اسم الإعلان'),
+                      ),
+                      DataColumn(
+                        label: Text('وصف الإعلان'),
+                      ),
+                      DataColumn(
+                        label: Text('الصورة'),
+                      ),  
+                      DataColumn(
+                        label: Text(''),
+                      ),
+                      DataColumn(
+                        label: Text(''),
+                      ),
+                    ],
+                    rows: List<DataRow>.generate(
+                        snapshot.data!.docs.length,
+                        (i) =>  DataRow(cells: [
                           DataCell(Text("${i + 1}")),
-                          DataCell(Text("${ads[i]['uid']}")),
-                          DataCell(Text("${ads[i]['title']}")),
-                          DataCell(Text("${ads[i]['desc']}")),
+                          DataCell(Text(snapshot.data!.docs[i].data()['adsId'].toString())),
+                          DataCell(Text(snapshot.data!.docs[i].data()['title'].toString())),
+                          DataCell(Text(snapshot.data!.docs[i].data()['desc'].toString())),
                           DataCell(
                               Container(
                                   width: 90,
                                   height: 70,
                                   child: Image.network(
-                                    "${ads[i]['url']}",
+                                   snapshot.data!.docs[i].data()['url'].toString(),
                                     fit: BoxFit.fill,
                                   )), onTap: () async {
-                            var url = "${ads[i]['url']}";
+                            var url =snapshot.data!.docs[i].data()['url'].toString();
                             if (await canLaunchUrlString(url)) {
                               await launchUrlString(url);
                             } else {
@@ -116,29 +94,30 @@ class _Manage_AdsScreenState extends State<Manage_AdsScreen> {
                               ),
                               InkWell(
                                   onTap: () {
-                                    if ("${ads[i]['statues']}" == "0") {
+                                   if (snapshot.data!.docs[i].data()['statues'].toString() == "0")  {
                                       AwesomeDialog(
                                         context: context,
                                         width: 500,
                                         dialogType: DialogType.QUESTION,
                                         animType: AnimType.SCALE,
-                                        title: ' رسالةتأكيد هل تريد نشر الإعلان',
+                                        title: ' رسالةتأكيد    ',
+                                        desc:"هل تريد نشر الإعلان؟",
                                         btnCancelOnPress: () {
                                           Get.back();
                                         },
                                         btnOkOnPress: () async {
                                           await FirebaseFirestore.instance
                                               .collection('ads')
-                                              .doc("${ads[i]['uid']}")
+                                              .doc(snapshot.data!.docs[i].data()['adsId'].toString())
                                               .update({
                                             'statues': "1",
-                                          });
+                                              });
                                         },
                                       ).show();
                                     }
                                   },
-                                  child: Text(" نشر الإعلان"),)
-                                     
+                                  child:snapshot.data!.docs[i].data()['statues'].toString() =="1" ?Text("تم نشر الإعلان"):Text("نشر الإعلان"),
+                              ),    
                             ],
                           )),
                           DataCell(Row(
@@ -149,34 +128,37 @@ class _Manage_AdsScreenState extends State<Manage_AdsScreen> {
                               ),
                               InkWell(
                                   onTap: () {
-                                    if ("${ads[i]['statues']}" == "0"||"${ads[i]['statues']}" == "1") {
+                                    if (snapshot.data!.docs[i].data()['statues'].toString()=="1")  {
                                       AwesomeDialog(
                                         context: context,
                                         width: 500,
                                         dialogType: DialogType.QUESTION,
                                         animType: AnimType.SCALE,
-                                        title: ' رسالةتأكيد هل تريد نشر الإعلان',
+                                        title: ' رسالةتأكيد ',
+                                        desc: "هل تريد رفض الإعلان؟",
                                         btnCancelOnPress: () {
                                           Get.back();
                                         },
                                         btnOkOnPress: () async {
                                           await FirebaseFirestore.instance
                                               .collection('ads')
-                                              .doc("${ads[i]['uid']}")
+                                              .doc(snapshot.data!.docs[i].data()['adsId'].toString())
                                               .update({
-                                            'statues': "2",
+                                            'statues': "0",
                                           });
                                         },
                                       ).show();
                                     }
                                   },
-                                  child: Text(" رفض الإعلان"),)
+                                  child:snapshot.data!.docs[i].data()['statues'].toString() == "0" ? Text(" تم رفض الإعلان") : Text("رفض الإعلان"),)
                                      
                             ],
                           )),
                         ]))),
-          ),
-        ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

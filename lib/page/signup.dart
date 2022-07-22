@@ -5,16 +5,27 @@ import 'package:admin_panal/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignUpAdminScreen extends StatelessWidget {
+class SignUpAdminScreen extends StatefulWidget {
   SignUpAdminScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SignUpAdminScreen> createState() => _SignUpAdminScreenState();
+}
+
+class _SignUpAdminScreenState extends State<SignUpAdminScreen> {
   final formKey = GlobalKey<FormState>();
+
   final TextEditingController usernameConrtoller = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController confirmPasswordController =
       TextEditingController();
+
   final controller = Get.put(AuthController());
+
   var confirmPass;
 
   @override

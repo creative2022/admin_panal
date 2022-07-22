@@ -7,7 +7,7 @@ class Messaging {
   // from 'https://console.firebase.google.com'
   // --> project settings --> cloud messaging --> "Server key"
   static const String serverKey =
-            'AAAAi3p2DSQ:APA91bHGxpjmyvCL-apk80_tlCGwcG4ZlLPFdG79-WvNrs4y3-N9LzxJceiDQ96aujUM_WUk7c4w7VtNxwD17ILRfU-Xz5qbafbtvPsR43zvn6mmdIkgzr_vBtcGl1dZr4wF8VsGbBs1';
+            '	AAAAi3p2DSQ:APA91bHGxpjmyvCL-apk80_tlCGwcG4ZlLPFdG79-WvNrs4y3-N9LzxJceiDQ96aujUM_WUk7c4w7VtNxwD17ILRfU-Xz5qbafbtvPsR43zvn6mmdIkgzr_vBtcGl1dZr4wF8VsGbBs1';
 
   static Future<Response> sendToAll({
     required String title,
@@ -36,7 +36,7 @@ class Messaging {
           'priority': 'high',
           'data': {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'id': '1',
+            'id': '87',
             'status': 'done',
           },
           'to': '/topics/$fcmToken',

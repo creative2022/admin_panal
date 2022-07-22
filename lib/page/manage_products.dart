@@ -40,7 +40,7 @@ class Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                 textDirection: TextDirection.rtl,
                 child: DataTable(
                     columnSpacing: 8,
-                    border: TableBorder.all(color: Colors.black, width: 1),
+                    border: TableBorder.all(color: Colors.black, width: 0.5),
                     columns: const [
                       DataColumn(
                         label: Text('الرقم'),
