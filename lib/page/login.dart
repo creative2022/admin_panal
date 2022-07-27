@@ -177,7 +177,7 @@ class LoginAdminScreen extends StatelessWidget {
                             onTap: () {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
-                                return  SignUpAdminScreen();
+                                return  const SignUpAdminScreen();
                               }));
                             },
                             child: TextUtils(

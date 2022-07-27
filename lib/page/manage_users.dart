@@ -1,12 +1,12 @@
+import 'package:admin_panal/logic/controllers/firestore_methods.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Manage_UserScreen extends StatefulWidget {
-  Manage_UserScreen({Key? key}) : super(key: key);
+  const Manage_UserScreen({Key? key}) : super(key: key);
 
   @override
   State<Manage_UserScreen>  createState() => _Manage_UserScreenState();
@@ -15,6 +15,8 @@ class Manage_UserScreen extends StatefulWidget {
 }
 
 class _Manage_UserScreenState extends State<Manage_UserScreen> {
+  final controller = Get.put(FireStoreController());
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,7 +33,7 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
+          return snapshot.data?.size!=0? ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             itemCount: 1,
@@ -81,82 +83,48 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                                   .data()['password']
                                   .toString())),
                               DataCell(
-                                  Container(
+                                  SizedBox(
                                       width: 90,
                                       height: 70,
                                       child: Image.network(
                                         snapshot.data!.docs[i].data()['photoUrl'],
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                       )), onTap: () async {
                                 var url =snapshot.data!.docs[i].data()['photoUrl'].toString();
                                 if (await canLaunchUrlString(url)) {
                                   await launchUrlString(url);
                                 } else {
-                                  print('$url');
+                                  print(url);
                                 }
                               }),
                                DataCell(Row(
                               children: [
-                                Icon(Icons.block, color: Colors.red, size: 15),
+                                const Icon(Icons.block, color: Colors.red, size: 15),
                                 const SizedBox(
                                   width: 5,
                                 ),
                                 InkWell(
-                                    onTap: () {
-                                      if ( snapshot.data!.docs[i].data()['blocked'].toString() == "yes") {
-                                        AwesomeDialog(
-                                          context: context,
-                                          width: 500,
-                                          dialogType: DialogType.QUESTION,
-                                          animType: AnimType.SCALE,
-                                          title: ' هل تريد إلغاء الحظر',
-                                          desc:
-                                              'إلغاء حظر المستخدم'+ snapshot.data!.docs[i].data()['name'].toString(),
-                                          btnCancelOnPress: () {
-                                            Get.back();
-                                          },
-                                          btnOkOnPress: () async {
-                                            await FirebaseFirestore.instance
-                                                .collection('users')
-                                                .doc(snapshot.data!.docs[i].data()['uid'].toString())
-                                                .update({
-                                              'blocked': "no",
-                                            });
-                                          },
-                                        ).show();
-                                      } else if (snapshot.data!.docs[i].data()['blocked'].toString() ==
+                                  onTap: (){
+                                    if (snapshot.data!.docs[i].data()['blocked'].toString() ==
+                                          "yes"){
+                                              controller.unblock_user(context, snapshot.data!.docs[i].data()['uid'].toString(), snapshot.data!.docs[i].data()['name'].toString());
+                                  }
+                                       else if (snapshot.data!.docs[i].data()['blocked'].toString() ==
                                           "no") {
-                                        AwesomeDialog(
-                                          context: context,
-                                          width: 500,
-                                          dialogType: DialogType.QUESTION,
-                                          animType: AnimType.SCALE,
-                                          title: ' هل تريد تأكيد الحظر',
-                                          desc:
-                                              'حظر المستخدم '+snapshot.data!.docs[i].data()['name'].toString(),
-                                          btnCancelOnPress: () {
-                                            Get.back();
-                                          },
-                                          btnOkOnPress: () async {
-                                            await FirebaseFirestore.instance
-                                                .collection('users')
-                                                .doc(snapshot.data!.docs[i].data()['uid'].toString())
-                                                .update({
-                                              'blocked': "yes",
-                                            });
-                                          },
-                                        ).show();
+                                          controller.block_user(context, snapshot.data!.docs[i].data()['uid'].toString(), snapshot.data!.docs[i].data()['name'].toString());
+                                      
+                                        
                                       }
                                     },
                                     child: snapshot.data!.docs[i].data()['blocked'].toString() == "no"
-                                        ? Text("حظر الحساب")
-                                        : Text("إلغاء الحظر")),
+                                        ? const Text("حظر الحساب")
+                                        : const Text("إلغاء الحظر")),
                               ],
                             )),
                             ]))),
               ),
             ),
-          );
+          ):const Center(child: Text("عذراً لايوجد بيانات"));
         },
       ),
     );

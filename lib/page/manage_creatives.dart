@@ -1,12 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Manage_CreativeScreen extends StatefulWidget {
-  Manage_CreativeScreen({Key? key}) : super(key: key);
+  const Manage_CreativeScreen({Key? key}) : super(key: key);
 
   @override
   State<Manage_CreativeScreen> createState() => _Manage_CreativeScreenState();
@@ -29,7 +28,7 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
+          return snapshot.data?.size!=0? ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             itemCount: 1,
@@ -86,13 +85,13 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                   .data()['address']
                                   .toString())),
                               DataCell(
-                                  Container(
+                                  SizedBox(
                                       width: 90,
                                       height: 70,
                                       child: Image.network(
                                         snapshot.data!.docs[i]
                                             .data()['photoUrl'],
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                       )), onTap: () async {
                                 var url = snapshot.data!.docs[i]
                                     .data()['photoUrl']
@@ -100,12 +99,12 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                 if (await canLaunchUrlString(url)) {
                                   await launchUrlString(url);
                                 } else {
-                                  print('$url');
+                                  print(url);
                                 }
                               }),
                               DataCell(Row(
                                 children: [
-                                  Icon(Icons.block,
+                                  const Icon(Icons.block,
                                       color: Colors.red, size: 15),
                                   const SizedBox(
                                     width: 5,
@@ -122,10 +121,8 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                             dialogType: DialogType.QUESTION,
                                             animType: AnimType.SCALE,
                                             title: ' هل تريد إلغاء الحظر',
-                                            desc: 'إلغاء حظر المستخدم ' +
-                                                snapshot.data!.docs[i]
-                                                    .data()['name']
-                                                    .toString(),
+                                            desc: 'إلغاء حظر المستخدم ${snapshot.data!.docs[i]
+                                                    .data()['name']}',
                                             btnCancelOnPress: () {
                                               Get.back();
                                             },
@@ -138,6 +135,13 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                                   .update({
                                                 'blocked': "no",
                                               });
+                                             await  Get.snackbar(
+                                            'إشعار تأكيد',
+          'تم إلغاء حظر الحساب بنجاح',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          ).show();
                                             },
                                           ).show();
                                         } else if (snapshot.data!.docs[i]
@@ -150,10 +154,8 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                             dialogType: DialogType.QUESTION,
                                             animType: AnimType.SCALE,
                                             title: ' هل تريد تأكيد الحظر',
-                                            desc: 'حظر المستخدم ' +
-                                                snapshot.data!.docs[i]
-                                                    .data()['name']
-                                                    .toString(),
+                                            desc: 'حظر المستخدم ${snapshot.data!.docs[i]
+                                                    .data()['name']}',
                                             btnCancelOnPress: () {
                                               Get.back();
                                             },
@@ -166,6 +168,13 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                                   .update({
                                                 'blocked': "yes",
                                               });
+                                            await   Get.snackbar(
+                                            'إشعار تأكيد',
+          'تم حظر الحساب بنجاح',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          ).show();
                                             },
                                           ).show();
                                         
@@ -175,14 +184,14 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                                   .data()['blocked']
                                                   .toString() ==
                                               "no"
-                                          ? Text("حظر الحساب")
-                                          : Text("إلغاء الحظر")),
+                                          ? const Text("حظر الحساب")
+                                          : const Text("إلغاء الحظر")),
                                 ],
                               )),
                             ]))),
               ),
             ),
-          );
+          ):const Center(child: Text("عذراً لايوجد بيانات"));
         },
       ),
     );

@@ -14,7 +14,7 @@ class ReprtsScreen extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.blueGrey),
             borderRadius: BorderRadius.circular(10),
-            color: Colors.blue,
+            color: Color.fromARGB(255, 192, 210, 224),
           ),
           child: Padding(
             padding: const EdgeInsets.all(18.0),

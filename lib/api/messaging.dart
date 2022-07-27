@@ -32,7 +32,7 @@ class Messaging {
     host: 'fcm.googleapis.com',
     path: '/fcm/send',),
         body: json.encode({
-          'notification': {'body': '$body', 'title': '$title'},
+          'notification': {'body': body, 'title': title},
           'priority': 'high',
           'data': {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',

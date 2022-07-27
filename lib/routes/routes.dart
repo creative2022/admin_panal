@@ -33,7 +33,7 @@ class AppRoutes {
     ),
     GetPage(
       name: Routes.adsScreen,
-      page: () =>  Manage_AdsScreen(),
+      page: () =>  const Manage_AdsScreen(),
     ),
     GetPage(
       name: Routes.productScreen,
@@ -45,22 +45,22 @@ class AppRoutes {
     ),
     GetPage(
       name: Routes.signupScreen,
-      page: () => SignUpAdminScreen(),
+      page: () => const SignUpAdminScreen(),
     ),
     GetPage(
       name: Routes.adminScreen,
-      page: () => const AdminScreen(),
+      page: () =>  AdminScreen(),
     ),
      GetPage(
       name: Routes.cretiveScreen,
-      page: () =>  Manage_CreativeScreen(),
+      page: () =>  const Manage_CreativeScreen(),
     ), GetPage(
       name: Routes.usersScreen,
       page: () =>  Manage_UserScreen(),
     ),
      GetPage(
       name: Routes.notificationScreen,
-      page: () =>  NotificationScreen(),
+      page: () =>  const NotificationScreen(),
     ),
   ];
 }

@@ -31,7 +31,7 @@ class Manage_AdsScreenState extends State<Manage_AdsScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
+          return snapshot.data?.size!=0? ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             itemCount: 1,
@@ -39,7 +39,7 @@ class Manage_AdsScreenState extends State<Manage_AdsScreen> {
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: DataTable(
-                    columnSpacing: 8,
+                    columnSpacing: 15,
                     border: TableBorder.all(color: Colors.black, width: 0.5),
                     columns: const [
                       DataColumn(
@@ -72,23 +72,23 @@ class Manage_AdsScreenState extends State<Manage_AdsScreen> {
                           DataCell(Text(snapshot.data!.docs[i].data()['title'].toString())),
                           DataCell(Text(snapshot.data!.docs[i].data()['desc'].toString())),
                           DataCell(
-                              Container(
+                              SizedBox(
                                   width: 90,
                                   height: 70,
                                   child: Image.network(
                                    snapshot.data!.docs[i].data()['url'].toString(),
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                   )), onTap: () async {
                             var url =snapshot.data!.docs[i].data()['url'].toString();
                             if (await canLaunchUrlString(url)) {
                               await launchUrlString(url);
                             } else {
-                              print('$url');
+                              print(url);
                             }
                           }),
                           DataCell(Row(
                             children: [
-                              Icon(Icons.check, color: Colors.red, size: 15),
+                              const Icon(Icons.check, color: Colors.red, size: 15),
                               const SizedBox(
                                 width: 5,
                               ),
@@ -116,13 +116,13 @@ class Manage_AdsScreenState extends State<Manage_AdsScreen> {
                                       ).show();
                                     }
                                   },
-                                  child:snapshot.data!.docs[i].data()['statues'].toString() =="1" ?Text("تم نشر الإعلان"):Text("نشر الإعلان"),
+                                  child:snapshot.data!.docs[i].data()['statues'].toString() =="1" ?const Text("تم نشر الإعلان"):const Text("نشر الإعلان"),
                               ),    
                             ],
                           )),
                           DataCell(Row(
                             children: [
-                              Icon(Icons.block, color: Colors.red, size: 15),
+                              const Icon(Icons.block, color: Colors.red, size: 15),
                               const SizedBox(
                                 width: 5,
                               ),
@@ -150,14 +150,14 @@ class Manage_AdsScreenState extends State<Manage_AdsScreen> {
                                       ).show();
                                     }
                                   },
-                                  child:snapshot.data!.docs[i].data()['statues'].toString() == "0" ? Text(" تم رفض الإعلان") : Text("رفض الإعلان"),)
+                                  child:snapshot.data!.docs[i].data()['statues'].toString() == "0" ? const Text(" تم رفض الإعلان") : const Text("رفض الإعلان"),)
                                      
                             ],
                           )),
                         ]))),
               ),
             ),
-          );
+          ):const Center(child: Text("عذراً لايوجد بيانات"));
         },
       ),
     );

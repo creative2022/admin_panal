@@ -30,8 +30,6 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.home,
       getPages: AppRoutes.routes,
-
-
     );
   }
 }

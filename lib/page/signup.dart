@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SignUpAdminScreen extends StatefulWidget {
-  SignUpAdminScreen({Key? key}) : super(key: key);
+  const SignUpAdminScreen({Key? key}) : super(key: key);
 
   @override
   State<SignUpAdminScreen> createState() => _SignUpAdminScreenState();

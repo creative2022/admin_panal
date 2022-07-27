@@ -1,5 +1,4 @@
 import 'package:admin_panal/logic/controllers/firestore_methods.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +30,7 @@ class Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
+        return  snapshot.data?.size!=0? ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             itemCount: 1,
@@ -39,14 +38,14 @@ class Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: DataTable(
-                    columnSpacing: 8,
+                    columnSpacing: 5,
                     border: TableBorder.all(color: Colors.black, width: 0.5),
                     columns: const [
                       DataColumn(
                         label: Text('الرقم'),
                       ),
                       DataColumn(
-                        label: Text('معرف النتج'),
+                        label: Text('معرف المنتج'),
                       ),
                       DataColumn(
                         label: Text('اسم المنتج'),
@@ -81,18 +80,18 @@ class Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                                   .data()['price']
                                   .toString())),
                               DataCell(
-                                  Container(
+                                  SizedBox(
                                       width: 90,
                                       height: 70,
                                       child: Image.network(
                                         snapshot.data!.docs[i].data()['postUrl'],
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                       )), onTap: () async {
                                 var url =snapshot.data!.docs[i].data()['postUrl'].toString();
                                 if (await canLaunchUrlString(url)) {
                                   await launchUrlString(url);
                                 } else {
-                                  print('$url');
+                                  print(url);
                                 }
                               }),
                               DataCell(Row(
@@ -118,7 +117,7 @@ class Manage_ProductsScreenState extends State<Manage_ProductsScreen> {
                             ]))),
               ),
             ),
-          );
+          ): const Center(child: Text("عذراً لايوجد بيانات"),);
         },
       ),
     );

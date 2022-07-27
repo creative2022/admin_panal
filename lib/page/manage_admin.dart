@@ -1,13 +1,369 @@
+import 'package:admin_panal/models/admin_model.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-
-class AdminScreen extends StatelessWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+class AdminScreen extends StatefulWidget {
+  AdminScreen({Key? key}) : super(key: key);
 
   @override
+  State<AdminScreen> createState() => _AdminScreenState();
+}
+
+class _AdminScreenState extends State<AdminScreen> {
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Admin PAGE"),
+    return Padding(
+      padding: const EdgeInsets.only(top: 60.0, right: 30.0, left: 40.0),
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('admin').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return snapshot.data?.size != 0
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 1,
+                  itemBuilder: (context, i) {
+                    return Material(
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: DataTable(
+                            columnSpacing: 8,
+                            dataRowHeight: 60,
+                            border: TableBorder.all(
+                                color: Colors.black, width: 0.5),
+                            columns: const [
+                              DataColumn(
+                                label: Text('الرقم'),
+                              ),
+                              DataColumn(
+                                label: Text('معرف الحساب'),
+                              ),
+                              DataColumn(
+                                label: Text('اسم المستخدم'),
+                              ),
+                              DataColumn(
+                                label: Text('كلمة المرور'),
+                              ),
+                              DataColumn(
+                                label: Text("الصلاحيات"),
+                              ),
+                            ],
+                            rows: List<DataRow>.generate(
+                                snapshot.data!.docs.length,
+                                (i) => DataRow(cells: [
+                                      DataCell(Text("${i + 1}")),
+                                      DataCell(Text(snapshot.data!.docs[i]
+                                          .data()['uid']
+                                          .toString())),
+                                      DataCell(Text(snapshot.data!.docs[i]
+                                          .data()['username']
+                                          .toString())),
+                                      DataCell(Text(snapshot.data!.docs[i]
+                                          .data()['password']
+                                          .toString())),
+                                      DataCell(Row(
+                                        children: [
+                                          const SizedBox(
+                                            width: 100,
+                                          ),
+                                          Column(
+                                            children: [
+                                              const Text("قراءة"),
+                                              InkWell(
+                                                  child: snapshot.data!.docs[i]
+                                                              .data()['read']
+                                                              .toString() ==
+                                                          "1"
+                                                      ? Icon(Icons.check)
+                                                      : Icon(Icons
+                                                          .no_accounts_outlined),
+                                                  onTap: () {
+                                                    if (snapshot.data!.docs[i]
+                                                            .data()['read'].toString() ==
+                                                        "0") {
+                                                      AwesomeDialog(
+                                                          context: context,
+                                                          width: 500,
+                                                          dialogType: DialogType
+                                                              .QUESTION,
+                                                          animType:
+                                                              AnimType.SCALE,
+                                                          title:
+                                                              ' هل تريد منح صلاحية القراءة',
+                                                          desc: 'منح صلاحية القراءة للمستخدم ' +
+                                                              snapshot
+                                                                  .data!.docs[i]
+                                                                  .data()[
+                                                                      'username']
+                                                                  .toString(),
+                                                          btnCancelOnPress: () {
+                                                            Get.back();
+                                                          },
+                                                          btnOkOnPress:
+                                                              () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'admin')
+                                                                .doc(snapshot
+                                                                    .data!
+                                                                    .docs[i]
+                                                                    .data()[
+                                                                        'uid']
+                                                                    .toString())
+                                                                .update({
+                                                              'read': '1'
+                                                            });
+                                                          }).show();
+                                                    } else if (snapshot
+                                                            .data!.docs[i]
+                                                            .data()['read'].toString() ==
+                                                        "1") {
+                                                      AwesomeDialog(
+                                                          context: context,
+                                                          width: 500,
+                                                          dialogType: DialogType
+                                                              .QUESTION,
+                                                          animType:
+                                                              AnimType.SCALE,
+                                                          title:
+                                                              ' هل تريد حظر صلاحية القراءة',
+                                                          desc: 'حظر صلاحية القراءة على المستخدم ' +
+                                                              snapshot
+                                                                  .data!.docs[i]
+                                                                  .data()[
+                                                                      'username']
+                                                                  .toString(),
+                                                          btnCancelOnPress: () {
+                                                            Get.back();
+                                                          },
+                                                          btnOkOnPress:
+                                                              () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'admin')
+                                                                .doc(snapshot
+                                                                    .data!
+                                                                    .docs[i]
+                                                                    .data()[
+                                                                        'uid']
+                                                                    .toString())
+                                                                .update({
+                                                              'read': '0'
+                                                            });
+                                                          }).show();
+                                                    }
+                                                  }),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 40,
+                                          ),
+                                          Column(
+                                            children: [
+                                              const Text("تعديل"),
+                                              InkWell(
+                                                  child: snapshot.data!.docs[i]
+                                                              .data()['edit']
+                                                              .toString() ==
+                                                          '1'
+                                                      ? Icon(Icons.check)
+                                                      : Icon(Icons
+                                                          .no_accounts_outlined),
+                                                  onTap: () {
+                                                    if (snapshot.data!.docs[i]
+                                                            .data()['edit'].toString() ==
+                                                        "0") {
+                                                      AwesomeDialog(
+                                                          context: context,
+                                                          width: 500,
+                                                          dialogType: DialogType
+                                                              .QUESTION,
+                                                          animType:
+                                                              AnimType.SCALE,
+                                                          title:
+                                                              ' هل تريد منح صلاحية التعديل',
+                                                          desc: 'منح صلاحية التعديل للمستخدم ' +
+                                                              snapshot
+                                                                  .data!.docs[i]
+                                                                  .data()[
+                                                                      'username']
+                                                                  .toString(),
+                                                          btnCancelOnPress: () {
+                                                            Get.back();
+                                                          },
+                                                          btnOkOnPress:
+                                                              () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'admin')
+                                                                .doc(snapshot
+                                                                    .data!
+                                                                    .docs[i]
+                                                                    .data()[
+                                                                        'uid']
+                                                                    .toString())
+                                                                .update({
+                                                              'edit': '1'
+                                                            });
+                                                          }).show();
+                                                    } else if (snapshot
+                                                            .data!.docs[i]
+                                                            .data()['edit'].toString() ==
+                                                        "1") {
+                                                      AwesomeDialog(
+                                                          context: context,
+                                                          width: 500,
+                                                          dialogType: DialogType
+                                                              .QUESTION,
+                                                          animType:
+                                                              AnimType.SCALE,
+                                                          title:
+                                                              ' هل تريد حظر صلاحية التعديل',
+                                                          desc: 'حظر صلاحية الحذف على التعديل ' +
+                                                              snapshot
+                                                                  .data!.docs[i]
+                                                                  .data()[
+                                                                      'username']
+                                                                  .toString(),
+                                                          btnCancelOnPress: () {
+                                                            Get.back();
+                                                          },
+                                                          btnOkOnPress:
+                                                              () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'admin')
+                                                                .doc(snapshot
+                                                                    .data!
+                                                                    .docs[i]
+                                                                    .data()[
+                                                                        'uid']
+                                                                    .toString())
+                                                                .update({
+                                                              'edit': '0'
+                                                            });
+                                                          }).show();
+                                                    }
+                                                  }),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 40,
+                                          ),
+                                          Column(
+                                            children: [
+                                              const Text("حذف"),
+                                              InkWell(
+                                                  child: snapshot.data!.docs[i]
+                                                              .data()['delete']
+                                                              .toString() ==
+                                                          "1"
+                                                      ? Icon(Icons.check)
+                                                      : Icon(Icons
+                                                          .no_accounts_outlined),
+                                                  onTap: () {
+                                                    if (snapshot.data!.docs[i]
+                                                            .data()['delete'].toString() ==
+                                                        "0") {
+                                                      AwesomeDialog(
+                                                          context: context,
+                                                          width: 500,
+                                                          dialogType: DialogType
+                                                              .QUESTION,
+                                                          animType:
+                                                              AnimType.SCALE,
+                                                          title:
+                                                              ' هل تريد منح صلاحية الحذف',
+                                                          desc: 'منح صلاحية الحذف للمستخدم ' +
+                                                              snapshot
+                                                                  .data!.docs[i]
+                                                                  .data()[
+                                                                      'username']
+                                                                  .toString(),
+                                                          btnCancelOnPress: () {
+                                                            Get.back();
+                                                          },
+                                                          btnOkOnPress:
+                                                              () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'admin')
+                                                                .doc(snapshot
+                                                                    .data!
+                                                                    .docs[i]
+                                                                    .data()[
+                                                                        'uid']
+                                                                    .toString())
+                                                                .update({
+                                                              'delete': '1'
+                                                            });
+                                                          }).show();
+                                                    } else if (snapshot
+                                                            .data!.docs[i]
+                                                            .data()['delete'].toString() ==
+                                                        "1") {
+                                                      AwesomeDialog(
+                                                          context: context,
+                                                          width: 500,
+                                                          dialogType: DialogType
+                                                              .QUESTION,
+                                                          animType:
+                                                              AnimType.SCALE,
+                                                          title:
+                                                              ' هل تريد حظر صلاحية الحذف',
+                                                          desc: 'حظر صلاحية الحذف على المستخدم ' +
+                                                              snapshot
+                                                                  .data!.docs[i]
+                                                                  .data()[
+                                                                      'username']
+                                                                  .toString(),
+                                                          btnCancelOnPress: () {
+                                                            Get.back();
+                                                          },
+                                                          btnOkOnPress:
+                                                              () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'admin')
+                                                                .doc(snapshot
+                                                                    .data!
+                                                                    .docs[i]
+                                                                    .data()[
+                                                                        'uid']
+                                                                    .toString())
+                                                                .update({
+                                                              'delete': '0'
+                                                            });
+                                                          }).show();
+                                                    }
+                                                  }),
+                                            ],
+                                          ),
+                                        ],
+                                      )),
+                                    ]))),
+                      ),
+                    );
+                  })
+              : const Center(
+                  child: Text("عذراً لايوجد بيانات"),
+                );
+        },
+      ),
     );
   }
 }
