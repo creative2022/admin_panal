@@ -33,7 +33,7 @@ class _SignUpAdminScreenState extends State<SignUpAdminScreen> {
     return Container(
       decoration: BoxDecoration(
           gradient:
-              LinearGradient(colors: [Colors.blue, Colors.indigo.shade600])),
+              LinearGradient(colors: [Colors.blue, Color.fromARGB(255, 169, 170, 179)])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(

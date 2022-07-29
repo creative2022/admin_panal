@@ -9,18 +9,16 @@ class Manage_UserScreen extends StatefulWidget {
   const Manage_UserScreen({Key? key}) : super(key: key);
 
   @override
-  State<Manage_UserScreen>  createState() => _Manage_UserScreenState();
-  
-  
+  State<Manage_UserScreen> createState() => _Manage_UserScreenState();
 }
 
 class _Manage_UserScreenState extends State<Manage_UserScreen> {
   final controller = Get.put(FireStoreController());
-  
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 60.0,right: 30.0,left: 40.0),
+      padding: const EdgeInsets.only(top: 60.0, right: 30.0, left: 40.0),
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('users')
@@ -33,98 +31,123 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return snapshot.data?.size!=0? ListView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: 1,
-            itemBuilder: (context, i) => Material(
-      
-          child:  Directionality(
-            textDirection: TextDirection.rtl,
-              child: DataTable(
-                columnSpacing: 8,
-                border: TableBorder.all(color:Colors.black,width: 0.5),
-                    columns: const [
-                        DataColumn(
-                        label: Text('الرقم'),
-                      ),
-                      DataColumn(
-                        label: Text('معرف الحساب'),
-                      ),
-                      DataColumn(
-                        label: Text('الإسم'),
-                      ),
-                      DataColumn(
-                        label: Text('الإيميل'),
-                      ),
-                      DataColumn(
-                        label: Text('كلمة المرور'),
-                      ),
-                      DataColumn(
-                        label: Text('الصورة'),
-                      ),
-                      DataColumn(
-                        label: Text(''),
-                      ),
-                    ],
-                    rows: List<DataRow>.generate(
-                        snapshot.data!.docs.length,
-                        (i) => DataRow(cells: [
-                           DataCell(Text("${i+1}")), 
-                              DataCell(Text(
-                                  snapshot.data!.docs[i].data()['uid'].toString())),
-                              DataCell(Text(snapshot.data!.docs[i]
-                                  .data()['name']
-                                  .toString())),
-                              DataCell(Text(snapshot.data!.docs[i]
-                                  .data()['email']
-                                  .toString())),
-                              DataCell(Text(snapshot.data!.docs[i]
-                                  .data()['password']
-                                  .toString())),
-                              DataCell(
-                                  SizedBox(
-                                      width: 90,
-                                      height: 70,
-                                      child: Image.network(
-                                        snapshot.data!.docs[i].data()['photoUrl'],
-                                        fit: BoxFit.cover,
-                                      )), onTap: () async {
-                                var url =snapshot.data!.docs[i].data()['photoUrl'].toString();
-                                if (await canLaunchUrlString(url)) {
-                                  await launchUrlString(url);
-                                } else {
-                                  print(url);
-                                }
-                              }),
-                               DataCell(Row(
-                              children: [
-                                const Icon(Icons.block, color: Colors.red, size: 15),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                InkWell(
-                                  onTap: (){
-                                    if (snapshot.data!.docs[i].data()['blocked'].toString() ==
-                                          "yes"){
-                                              controller.unblock_user(context, snapshot.data!.docs[i].data()['uid'].toString(), snapshot.data!.docs[i].data()['name'].toString());
-                                  }
-                                       else if (snapshot.data!.docs[i].data()['blocked'].toString() ==
-                                          "no") {
-                                          controller.block_user(context, snapshot.data!.docs[i].data()['uid'].toString(), snapshot.data!.docs[i].data()['name'].toString());
-                                      
-                                        
+          return snapshot.data?.size != 0
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 1,
+                  itemBuilder: (context, i) => Material(
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: DataTable(
+                          columnSpacing: 8,
+                          border:
+                              TableBorder.all(color: Colors.black, width: 0.5),
+                          columns: const [
+                            DataColumn(
+                              label: Text('الرقم'),
+                            ),
+                            DataColumn(
+                              label: Text('معرف الحساب'),
+                            ),
+                            DataColumn(
+                              label: Text('الإسم'),
+                            ),
+                            DataColumn(
+                              label: Text('الإيميل'),
+                            ),
+                            DataColumn(
+                              label: Text('كلمة المرور'),
+                            ),
+                            DataColumn(
+                              label: Text('الصورة'),
+                            ),
+                            DataColumn(
+                              label: Text(''),
+                            ),
+                          ],
+                          rows: List<DataRow>.generate(
+                              snapshot.data!.docs.length,
+                              (i) => DataRow(cells: [
+                                    DataCell(Text("${i + 1}")),
+                                    DataCell(Text(snapshot.data!.docs[i]
+                                        .data()['uid']
+                                        .toString())),
+                                    DataCell(Text(snapshot.data!.docs[i]
+                                        .data()['name']
+                                        .toString())),
+                                    DataCell(Text(snapshot.data!.docs[i]
+                                        .data()['email']
+                                        .toString())),
+                                    DataCell(Text(snapshot.data!.docs[i]
+                                        .data()['password']
+                                        .toString())),
+                                    DataCell(
+                                        SizedBox(
+                                            width: 90,
+                                            height: 70,
+                                            child: Image.network(
+                                              snapshot.data!.docs[i]
+                                                  .data()['photoUrl'],
+                                              fit: BoxFit.cover,
+                                            )), onTap: () async {
+                                      var url = snapshot.data!.docs[i]
+                                          .data()['photoUrl']
+                                          .toString();
+                                      if (await canLaunchUrlString(url)) {
+                                        await launchUrlString(url);
+                                      } else {
+                                        print(url);
                                       }
-                                    },
-                                    child: snapshot.data!.docs[i].data()['blocked'].toString() == "no"
-                                        ? const Text("حظر الحساب")
-                                        : const Text("إلغاء الحظر")),
-                              ],
-                            )),
-                            ]))),
-              ),
-            ),
-          ):const Center(child: Text("عذراً لايوجد بيانات"));
+                                    }),
+                                    DataCell(Row(
+                                      children: [
+                                        const Icon(Icons.block,
+                                            color: Colors.red, size: 15),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        InkWell(
+                                            onTap: () {
+                                              if (snapshot.data!.docs[i]
+                                                      .data()['blocked']
+                                                      .toString() ==
+                                                  "yes") {
+                                                controller.unblock_user(
+                                                    context,
+                                                    snapshot.data!.docs[i]
+                                                        .data()['uid']
+                                                        .toString(),
+                                                    snapshot.data!.docs[i]
+                                                        .data()['name']
+                                                        .toString());
+                                              } else if (snapshot.data!.docs[i]
+                                                      .data()['blocked']
+                                                      .toString() ==
+                                                  "no") {
+                                                controller.block_user(
+                                                    context,
+                                                    snapshot.data!.docs[i]
+                                                        .data()['uid']
+                                                        .toString(),
+                                                    snapshot.data!.docs[i]
+                                                        .data()['name']
+                                                        .toString());
+                                              }
+                                            },
+                                            child: snapshot.data!.docs[i]
+                                                        .data()['blocked']
+                                                        .toString() ==
+                                                    "no"
+                                                ? const Text("حظر الحساب")
+                                                : const Text("إلغاء الحظر")),
+                                      ],
+                                    )),
+                                  ]))),
+                    ),
+                  ),
+                )
+              : const Center(child: Text("عذراً لايوجد بيانات"));
         },
       ),
     );

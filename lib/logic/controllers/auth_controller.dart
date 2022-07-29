@@ -70,7 +70,10 @@ class AuthController extends GetxController {
         uid: cred.user!.uid,
         password: password,
         email: email,
-        username:username
+        username:username,
+        edit: "0",
+        read: "0",
+        delete: "0"
       );
 
       await _firestore

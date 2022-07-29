@@ -27,7 +27,7 @@ class FireStoreController extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white,
-          ).show();
+          );
         },
       ).show();
     } catch (err) {
@@ -38,7 +38,7 @@ class FireStoreController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
-      ).show();
+      );
     }
     return message;
   }
@@ -67,7 +67,7 @@ class FireStoreController extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white,
-          ).show();
+          );
         },
       ).show();
     } catch (err) {
@@ -78,7 +78,7 @@ class FireStoreController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
-      ).show();
+      );
     }
     return message;
   }
@@ -107,7 +107,7 @@ class FireStoreController extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white,
-          ).show();
+          );
         },
       ).show();
     } catch (err) {
@@ -118,7 +118,7 @@ class FireStoreController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
-      ).show();
+      );
     }
     return message;
   }

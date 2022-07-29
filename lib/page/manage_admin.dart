@@ -55,6 +55,9 @@ class _AdminScreenState extends State<AdminScreen> {
                               DataColumn(
                                 label: Text("الصلاحيات"),
                               ),
+                              DataColumn(
+                                label: Text(""),
+                              ),
                             ],
                             rows: List<DataRow>.generate(
                                 snapshot.data!.docs.length,
@@ -82,12 +85,12 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               .data()['read']
                                                               .toString() ==
                                                           "1"
-                                                      ? Icon(Icons.check)
-                                                      : Icon(Icons
-                                                          .close),
+                                                      ? const Icon(Icons.check)
+                                                      : const Icon(Icons.close),
                                                   onTap: () {
                                                     if (snapshot.data!.docs[i]
-                                                            .data()['read'].toString() ==
+                                                            .data()['read']
+                                                            .toString() ==
                                                         "0") {
                                                       AwesomeDialog(
                                                           context: context,
@@ -98,12 +101,8 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               AnimType.SCALE,
                                                           title:
                                                               ' هل تريد منح صلاحية القراءة',
-                                                          desc: 'منح صلاحية القراءة للمستخدم ' +
-                                                              snapshot
-                                                                  .data!.docs[i]
-                                                                  .data()[
-                                                                      'username']
-                                                                  .toString(),
+                                                          desc:
+                                                              'منح صلاحية القراءة للمستخدم ${snapshot.data!.docs[i].data()['username']}',
                                                           btnCancelOnPress: () {
                                                             Get.back();
                                                           },
@@ -122,10 +121,22 @@ class _AdminScreenState extends State<AdminScreen> {
                                                                 .update({
                                                               'read': '1'
                                                             });
+                                                            Get.snackbar(
+                                                              'إشعار تأكيد',
+                                                              "تم منح الصلاحية للمستخدم ${snapshot.data!.docs[i].data()['username']}",
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .BOTTOM,
+                                                              backgroundColor:
+                                                                  Colors.green,
+                                                              colorText:
+                                                                  Colors.white,
+                                                            );
                                                           }).show();
                                                     } else if (snapshot
                                                             .data!.docs[i]
-                                                            .data()['read'].toString() ==
+                                                            .data()['read']
+                                                            .toString() ==
                                                         "1") {
                                                       AwesomeDialog(
                                                           context: context,
@@ -136,12 +147,8 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               AnimType.SCALE,
                                                           title:
                                                               ' هل تريد حظر صلاحية القراءة',
-                                                          desc: 'حظر صلاحية القراءة على المستخدم ' +
-                                                              snapshot
-                                                                  .data!.docs[i]
-                                                                  .data()[
-                                                                      'username']
-                                                                  .toString(),
+                                                          desc:
+                                                              'حظر صلاحية القراءة على المستخدم ${snapshot.data!.docs[i].data()['username']}',
                                                           btnCancelOnPress: () {
                                                             Get.back();
                                                           },
@@ -160,6 +167,17 @@ class _AdminScreenState extends State<AdminScreen> {
                                                                 .update({
                                                               'read': '0'
                                                             });
+                                                            Get.snackbar(
+                                                              'إشعار تأكيد',
+                                                              "تم حظر الصلاحية على المستخدم ${snapshot.data!.docs[i].data()['username']}",
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .BOTTOM,
+                                                              backgroundColor:
+                                                                  Colors.green,
+                                                              colorText:
+                                                                  Colors.white,
+                                                            );
                                                           }).show();
                                                     }
                                                   }),
@@ -176,12 +194,12 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               .data()['edit']
                                                               .toString() ==
                                                           '1'
-                                                      ? Icon(Icons.check)
-                                                      : Icon(Icons
-                                                          .close),
+                                                      ? const Icon(Icons.check)
+                                                      : const Icon(Icons.close),
                                                   onTap: () {
                                                     if (snapshot.data!.docs[i]
-                                                            .data()['edit'].toString() ==
+                                                            .data()['edit']
+                                                            .toString() ==
                                                         "0") {
                                                       AwesomeDialog(
                                                           context: context,
@@ -192,12 +210,8 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               AnimType.SCALE,
                                                           title:
                                                               ' هل تريد منح صلاحية التعديل',
-                                                          desc: 'منح صلاحية التعديل للمستخدم ' +
-                                                              snapshot
-                                                                  .data!.docs[i]
-                                                                  .data()[
-                                                                      'username']
-                                                                  .toString(),
+                                                          desc:
+                                                              'منح صلاحية التعديل للمستخدم ${snapshot.data!.docs[i].data()['username']}',
                                                           btnCancelOnPress: () {
                                                             Get.back();
                                                           },
@@ -216,10 +230,22 @@ class _AdminScreenState extends State<AdminScreen> {
                                                                 .update({
                                                               'edit': '1'
                                                             });
+                                                            Get.snackbar(
+                                                              'إشعار تأكيد',
+                                                              "تم منح الصلاحية للمستخدم ${snapshot.data!.docs[i].data()['username']}",
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .BOTTOM,
+                                                              backgroundColor:
+                                                                  Colors.green,
+                                                              colorText:
+                                                                  Colors.white,
+                                                            );
                                                           }).show();
                                                     } else if (snapshot
                                                             .data!.docs[i]
-                                                            .data()['edit'].toString() ==
+                                                            .data()['edit']
+                                                            .toString() ==
                                                         "1") {
                                                       AwesomeDialog(
                                                           context: context,
@@ -230,12 +256,8 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               AnimType.SCALE,
                                                           title:
                                                               ' هل تريد حظر صلاحية التعديل',
-                                                          desc: 'حظر صلاحية الحذف على التعديل ' +
-                                                              snapshot
-                                                                  .data!.docs[i]
-                                                                  .data()[
-                                                                      'username']
-                                                                  .toString(),
+                                                          desc:
+                                                              'حظر صلاحية الحذف على المستخدم ${snapshot.data!.docs[i].data()['username']}',
                                                           btnCancelOnPress: () {
                                                             Get.back();
                                                           },
@@ -254,6 +276,17 @@ class _AdminScreenState extends State<AdminScreen> {
                                                                 .update({
                                                               'edit': '0'
                                                             });
+                                                            Get.snackbar(
+                                                              'إشعار تأكيد',
+                                                              "تم حظر الصلاحية على المستخدم ${snapshot.data!.docs[i].data()['username']}",
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .BOTTOM,
+                                                              backgroundColor:
+                                                                  Colors.green,
+                                                              colorText:
+                                                                  Colors.white,
+                                                            );
                                                           }).show();
                                                     }
                                                   }),
@@ -270,12 +303,12 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               .data()['delete']
                                                               .toString() ==
                                                           "1"
-                                                      ? Icon(Icons.check)
-                                                      : Icon(Icons
-                                                          .close),
+                                                      ? const Icon(Icons.check)
+                                                      : const Icon(Icons.close),
                                                   onTap: () {
                                                     if (snapshot.data!.docs[i]
-                                                            .data()['delete'].toString() ==
+                                                            .data()['delete']
+                                                            .toString() ==
                                                         "0") {
                                                       AwesomeDialog(
                                                           context: context,
@@ -286,12 +319,8 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               AnimType.SCALE,
                                                           title:
                                                               ' هل تريد منح صلاحية الحذف',
-                                                          desc: 'منح صلاحية الحذف للمستخدم ' +
-                                                              snapshot
-                                                                  .data!.docs[i]
-                                                                  .data()[
-                                                                      'username']
-                                                                  .toString(),
+                                                          desc:
+                                                              'منح صلاحية الحذف للمستخدم ${snapshot.data!.docs[i].data()['username']}',
                                                           btnCancelOnPress: () {
                                                             Get.back();
                                                           },
@@ -310,10 +339,22 @@ class _AdminScreenState extends State<AdminScreen> {
                                                                 .update({
                                                               'delete': '1'
                                                             });
+                                                            Get.snackbar(
+                                                              'إشعار تأكيد',
+                                                              "تم منح الصلاحية للمستخدم ${snapshot.data!.docs[i].data()['username']}",
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .BOTTOM,
+                                                              backgroundColor:
+                                                                  Colors.green,
+                                                              colorText:
+                                                                  Colors.white,
+                                                            );
                                                           }).show();
                                                     } else if (snapshot
                                                             .data!.docs[i]
-                                                            .data()['delete'].toString() ==
+                                                            .data()['delete']
+                                                            .toString() ==
                                                         "1") {
                                                       AwesomeDialog(
                                                           context: context,
@@ -324,12 +365,8 @@ class _AdminScreenState extends State<AdminScreen> {
                                                               AnimType.SCALE,
                                                           title:
                                                               ' هل تريد حظر صلاحية الحذف',
-                                                          desc: 'حظر صلاحية الحذف على المستخدم ' +
-                                                              snapshot
-                                                                  .data!.docs[i]
-                                                                  .data()[
-                                                                      'username']
-                                                                  .toString(),
+                                                          desc:
+                                                              'حظر صلاحية الحذف على المستخدم ${snapshot.data!.docs[i].data()['username']}',
                                                           btnCancelOnPress: () {
                                                             Get.back();
                                                           },
@@ -348,10 +385,78 @@ class _AdminScreenState extends State<AdminScreen> {
                                                                 .update({
                                                               'delete': '0'
                                                             });
+                                                            Get.snackbar(
+                                                              'إشعار تأكيد',
+                                                              "تم حظر الصلاحية على المستخدم ${snapshot.data!.docs[i].data()['username']}",
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .BOTTOM,
+                                                              backgroundColor:
+                                                                  Colors.green,
+                                                              colorText:
+                                                                  Colors.white,
+                                                            );
                                                           }).show();
                                                     }
                                                   }),
                                             ],
+                                          ),
+                                        ],
+                                      )),
+                                      DataCell(Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 40,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              AwesomeDialog(
+                                                  context: context,
+                                                  width: 500,
+                                                  dialogType:
+                                                      DialogType.QUESTION,
+                                                  animType: AnimType.SCALE,
+                                                  title: ' هل تريد تأكيد الحذف',
+                                                  desc:
+                                                      'حذف المستخدم ${snapshot.data!.docs[i].data()['username']}',
+                                                  btnOkOnPress: () async {
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection("admin")
+                                                        .doc(snapshot
+                                                            .data!.docs[i]
+                                                            .data()['uid'])
+                                                        .delete();
+
+                                                    Get.snackbar(
+                                                      'إشعار تأكيد',
+                                                      "تم حذف المستخدم ${snapshot.data!.docs[i].data()['username']}",
+                                                      snackPosition:
+                                                          SnackPosition.BOTTOM,
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      colorText: Colors.white,
+                                                    );
+                                                  },
+                                                  btnCancelOnPress: () {
+                                                    Get.back();
+                                                  }).show();
+                                            },
+                                            child: Row(
+                                              children: const [
+                                                Icon(Icons.delete),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  "حذف",
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       )),

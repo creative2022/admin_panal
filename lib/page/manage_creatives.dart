@@ -135,13 +135,13 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                                   .update({
                                                 'blocked': "no",
                                               });
-                                             await  Get.snackbar(
+                                               Get.snackbar(
                                             'إشعار تأكيد',
           'تم إلغاء حظر الحساب بنجاح',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white,
-          ).show();
+          );
                                             },
                                           ).show();
                                         } else if (snapshot.data!.docs[i]
@@ -168,13 +168,13 @@ class _Manage_CreativeScreenState extends State<Manage_CreativeScreen> {
                                                   .update({
                                                 'blocked': "yes",
                                               });
-                                            await   Get.snackbar(
+                                               Get.snackbar(
                                             'إشعار تأكيد',
           'تم حظر الحساب بنجاح',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white,
-          ).show();
+          );
                                             },
                                           ).show();
                                         

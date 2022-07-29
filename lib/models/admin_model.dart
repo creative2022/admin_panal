@@ -5,6 +5,9 @@ class AdminModel {
   final String uid;
   final String password;
   final String username;
+  final String read;
+  final String edit;
+  final String delete;
 
 
   const AdminModel({
@@ -13,6 +16,9 @@ class AdminModel {
       required this.username,
       required this.password,
       required this.email,
+      required this.edit,
+      required this.delete,
+      required this.read,
       });
 
   static AdminModel fromSnap(DocumentSnapshot snap) {
@@ -23,6 +29,9 @@ class AdminModel {
       email: snapshot["email"],
       password: snapshot["password"],
       username: snapshot["username"],
+      edit: snapshot["edit"],
+      delete: snapshot["delete"],
+      read: snapshot["read"],
     );
   }
 
@@ -31,5 +40,8 @@ class AdminModel {
         "email": email,
         "password": password,
         "username": username,
+        "edit": username,
+        "delete": username,
+        "read": username,
       };
 }
