@@ -1,4 +1,5 @@
 import 'package:admin_panal/page/Manage_ads.dart';
+import 'package:admin_panal/page/feedback.dart';
 import 'package:admin_panal/page/manage_admin.dart';
 import 'package:admin_panal/page/manage_products.dart';
 import 'package:admin_panal/page/manage_creatives.dart';
@@ -62,6 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedScreen =  const NotificationScreen();
         });
         break;
+        case AppRoutes.feedback:
+        setState(() {
+          _selectedScreen =   FeedBackScreen();
+        });
+        break;
     }
   }
 
@@ -79,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 AdminMenuItem(
                   title: 'ٌإدارة الحرفيين',
                   route: AppRoutes.cretive,
-                  icon: Icons.person,
+                  icon: Icons.people
                 ), AdminMenuItem(
                   title: 'ٌإدارة المستخدمين',
                   route: AppRoutes.users,
@@ -111,6 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: 'الإشعارات',
                   route: AppRoutes.notification,
                   icon: Icons.notifications_active_outlined,
+                ),
+                 AdminMenuItem(
+                  title: 'الشكاوي',
+                  route: AppRoutes.feedback,
+                  icon: Icons.feedback
                 )
               ],
               selectedRoute: AppRoutes.home,

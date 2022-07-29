@@ -1,6 +1,7 @@
 import 'package:admin_panal/logic/controllers/firestore_methods.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -14,6 +15,27 @@ class Manage_UserScreen extends StatefulWidget {
 
 class _Manage_UserScreenState extends State<Manage_UserScreen> {
   final controller = Get.put(FireStoreController());
+  List admin = [];
+  getdate() async {
+    CollectionReference adminref =
+        FirebaseFirestore.instance.collection("admin");
+    await adminref
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        admin.add(element.data());
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      getdate();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,30 +131,50 @@ class _Manage_UserScreenState extends State<Manage_UserScreen> {
                                         ),
                                         InkWell(
                                             onTap: () {
-                                              if (snapshot.data!.docs[i]
-                                                      .data()['blocked']
+                                              if (admin[0]['edit'].toString() ==
+                                                  "0") {
+                                                AwesomeDialog(
+                                                  context: context,
+                                                  width: 500,
+                                                  dialogType:
+                                                      DialogType.WARNING,
+                                                  animType: AnimType.SCALE,
+                                                  title: ' !!!تنبية',
+                                                  desc:
+                                                      'عذراً لاتمتلك صلاحية التعديل',
+                                                  btnOkOnPress: () {
+                                                    Get.back();
+                                                  },
+                                                ).show();
+                                              } else if (admin[0]['edit']
                                                       .toString() ==
-                                                  "yes") {
-                                                controller.unblock_user(
-                                                    context,
-                                                    snapshot.data!.docs[i]
-                                                        .data()['uid']
-                                                        .toString(),
-                                                    snapshot.data!.docs[i]
-                                                        .data()['name']
-                                                        .toString());
-                                              } else if (snapshot.data!.docs[i]
-                                                      .data()['blocked']
-                                                      .toString() ==
-                                                  "no") {
-                                                controller.block_user(
-                                                    context,
-                                                    snapshot.data!.docs[i]
-                                                        .data()['uid']
-                                                        .toString(),
-                                                    snapshot.data!.docs[i]
-                                                        .data()['name']
-                                                        .toString());
+                                                  "1") {
+                                                if (snapshot.data!.docs[i]
+                                                        .data()['blocked']
+                                                        .toString() ==
+                                                    "yes") {
+                                                  controller.unblock_user(
+                                                      context,
+                                                      snapshot.data!.docs[i]
+                                                          .data()['uid']
+                                                          .toString(),
+                                                      snapshot.data!.docs[i]
+                                                          .data()['name']
+                                                          .toString());
+                                                } else if (snapshot
+                                                        .data!.docs[i]
+                                                        .data()['blocked']
+                                                        .toString() ==
+                                                    "no") {
+                                                  controller.block_user(
+                                                      context,
+                                                      snapshot.data!.docs[i]
+                                                          .data()['uid']
+                                                          .toString(),
+                                                      snapshot.data!.docs[i]
+                                                          .data()['name']
+                                                          .toString());
+                                                }
                                               }
                                             },
                                             child: snapshot.data!.docs[i]

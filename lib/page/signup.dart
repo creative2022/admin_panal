@@ -2,6 +2,9 @@ import 'package:admin_panal/logic/controllers/auth_controller.dart';
 import 'package:admin_panal/utils/app_colors.dart';
 import 'package:admin_panal/utils/my_string.dart';
 import 'package:admin_panal/utils/text_utils.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,12 +31,34 @@ class _SignUpAdminScreenState extends State<SignUpAdminScreen> {
 
   var confirmPass;
 
+  List admin = [];
+  getdate() async {
+    CollectionReference adminref =
+        FirebaseFirestore.instance.collection("admin");
+    await adminref
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        admin.add(element.data());
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      getdate();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          gradient:
-              LinearGradient(colors: [Colors.blue, Color.fromARGB(255, 169, 170, 179)])),
+          gradient: LinearGradient(
+              colors: [Colors.blue, Color.fromARGB(255, 169, 170, 179)])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
@@ -232,14 +257,29 @@ class _SignUpAdminScreenState extends State<SignUpAdminScreen> {
                             builder: (_) => TextButton(
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
-                                  String email = emailController.text.trim();
-                                  String password = passwordController.text;
-                                  String username = usernameConrtoller.text;
-                                  controller.signUpAdmin(
+                                  if (admin[0]['edit'].toString() == "0") {
+                                    AwesomeDialog(
                                       context: context,
-                                      email: email,
-                                      password: password,
-                                      username: username);
+                                      width: 500,
+                                      dialogType: DialogType.WARNING,
+                                      animType: AnimType.SCALE,
+                                      title: ' !!!تنبية',
+                                      desc: 'عذراً لاتمتلك صلاحية إنشاء حساب ',
+                                      btnOkOnPress: () {
+                                        Get.back();
+                                      },
+                                    ).show();
+                                  } else if (admin[0]['edit'].toString() ==
+                                      "1") {
+                                    String email = emailController.text.trim();
+                                    String password = passwordController.text;
+                                    String username = usernameConrtoller.text;
+                                    controller.signUpAdmin(
+                                        context: context,
+                                        email: email,
+                                        password: password,
+                                        username: username);
+                                  }
                                 }
                               },
                               child: Padding(

@@ -40,8 +40,8 @@ class AdminModel {
         "email": email,
         "password": password,
         "username": username,
-        "edit": username,
-        "delete": username,
-        "read": username,
+        "edit": edit,
+        "delete": delete,
+        "read": read,
       };
 }

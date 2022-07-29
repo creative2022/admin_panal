@@ -2,17 +2,45 @@ import 'package:admin_panal/utils/app_colors.dart';
 import 'package:admin_panal/page/signup.dart';
 import 'package:admin_panal/utils/my_string.dart';
 import 'package:admin_panal/utils/text_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../logic/controllers/auth_controller.dart';
 
-class LoginAdminScreen extends StatelessWidget {
+class LoginAdminScreen extends StatefulWidget {
   LoginAdminScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginAdminScreen> createState() => _LoginAdminScreenState();
+}
+
+class _LoginAdminScreenState extends State<LoginAdminScreen> {
+  List admin = [];
+  CollectionReference refrence = FirebaseFirestore.instance.collection("admin");
+
+  getData() async {
+    var val = await refrence.get();
+    val.docs.forEach((element) {
+      setState(() {
+        admin.add(element.data());
+      });
+    });
+  }
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final controller = Get.put(AuthController());
+
   final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +153,6 @@ class LoginAdminScreen extends StatelessWidget {
                                   ),
                                   keyboardType: TextInputType.text);
                             },
-                            
                           ),
                         ),
                       ),
@@ -140,54 +167,41 @@ class LoginAdminScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
                         decoration: const BoxDecoration(color: Colors.indigo),
-                        child:  GetBuilder<AuthController>(
-                              builder: (_) => TextButton(
-                          onPressed: () async{ if (formKey.currentState!.validate()) {
-                                    String email = emailController.text.trim();
-                                    String password = passwordController.text;
+                        child: GetBuilder<AuthController>(
+                            builder: (_) => TextButton(
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      String email =
+                                          emailController.text.trim();
+                                      String password = passwordController.text;
 
-                                    controller.LoginAdmin(
-                                        email: email, password: password);
-                                  }
-                                },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextUtils(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  text: "تسجيل الدخول",
-                                  color: Colors.yellow,
-                                  underLine: TextDecoration.none,
-                                ),
-                              ],
-                            ),
-                          ),)
-                        ),
+                                      controller.LoginAdmin(
+                                          email: email, password: password);
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TextUtils(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                          text: "تسجيل الدخول",
+                                          color: Colors.yellow,
+                                          underLine: TextDecoration.none,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
                       ),
                     ),
                     const SizedBox(
                       height: 40,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return  const SignUpAdminScreen();
-                              }));
-                            },
-                            child: TextUtils(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                text: "انشاء حساب  ",
-                                color: Colors.indigo,
-                                underLine: TextDecoration.underline),
-                          ),
-                         ),
                   ],
                 ),
               ),

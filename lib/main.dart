@@ -1,4 +1,5 @@
 import 'package:admin_panal/routes/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -28,7 +29,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      initialRoute: AppRoutes.home,
+      initialRoute: FirebaseAuth.instance.currentUser != null 
+            ? AppRoutes.home
+            : AppRoutes.login,
       getPages: AppRoutes.routes,
     );
   }

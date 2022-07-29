@@ -88,6 +88,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             sendNotification(selected);
+                            bodyController.clear();
+                            titleController.clear();
                           }
                         },
                         child: const Text('إرسال'),

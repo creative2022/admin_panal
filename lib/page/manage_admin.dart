@@ -50,6 +50,9 @@ class _AdminScreenState extends State<AdminScreen> {
                                 label: Text('اسم المستخدم'),
                               ),
                               DataColumn(
+                                label: Text('الإيميل'),
+                              ),
+                              DataColumn(
                                 label: Text('كلمة المرور'),
                               ),
                               DataColumn(
@@ -68,6 +71,9 @@ class _AdminScreenState extends State<AdminScreen> {
                                           .toString())),
                                       DataCell(Text(snapshot.data!.docs[i]
                                           .data()['username']
+                                          .toString())),
+                                           DataCell(Text(snapshot.data!.docs[i]
+                                          .data()['email']
                                           .toString())),
                                       DataCell(Text(snapshot.data!.docs[i]
                                           .data()['password']
@@ -444,13 +450,14 @@ class _AdminScreenState extends State<AdminScreen> {
                                             },
                                             child: Row(
                                               children: const [
-                                                Icon(Icons.delete),
+                                                Icon(Icons.delete,color: Colors.red,),
                                                 SizedBox(
                                                   width: 10,
                                                 ),
                                                 Text(
                                                   "حذف",
                                                   style: TextStyle(
+                                                    color: Colors.red,
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold),

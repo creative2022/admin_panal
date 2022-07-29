@@ -1,4 +1,3 @@
-
 import 'package:admin_panal/models/admin_model.dart';
 import 'package:admin_panal/routes/routes.dart';
 import 'package:admin_panal/widgets/loading.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isvisibilty = false;
@@ -51,6 +51,7 @@ class AuthController extends GetxController {
       );
     }
   }
+
   void signUpAdmin({
     required context,
     required String email,
@@ -58,23 +59,20 @@ class AuthController extends GetxController {
     required String username,
   }) async {
     try {
-       Get.to(const Loading());
+      Get.to(const Loading());
       UserCredential cred = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-     
 
-     
       AdminModel user = AdminModel(
-        uid: cred.user!.uid,
-        password: password,
-        email: email,
-        username:username,
-        edit: "0",
-        read: "0",
-        delete: "0"
-      );
+          uid: cred.user!.uid,
+          password: password,
+          email: email,
+          username: username,
+          edit: "0",
+          read: "1",
+          delete: "0");
 
       await _firestore
           .collection("admin")
@@ -82,45 +80,49 @@ class AuthController extends GetxController {
           .set(user.toJson());
 
       update();
- 
 
-     Get.back();
- AwesomeDialog(
-      context: context,
-      width: 400,
-      dialogType: DialogType.SUCCES,
-      animType: AnimType.SCALE,
-      title: 'رسالة تأكيد ',
-      desc: 'تم إنشاء الحساب بنجاح',
-      btnOkOnPress: () {
-        Get.offAllNamed(AppRoutes.home);
-      },
-    ).show();
- 
-      
+      Get.back();
+      AwesomeDialog(
+        context: context,
+        width: 400,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.SCALE,
+        title: 'رسالة تأكيد ',
+        desc: 'تم إنشاء الحساب بنجاح',
+        btnOkOnPress: () {
+          Get.offAllNamed(AppRoutes.home);
+        },
+      ).show();
     } on FirebaseAuthException catch (error) {
       Get.back();
-      String message='';
+      String message = '';
       if (error.code == 'weak-password') {
         message = ' !....كلمة مرور ضعيفة جداً  ';
       } else if (error.code == 'email-already-in-use') {
         message = ' !....الحساب موجود لهذا الايميل ';
-      } else{
+      } else {
         message = "!..... لا يوجد اتصال باالانترنت";
-      
       }
-      Get.snackbar("Error", message, snackPosition: SnackPosition.BOTTOM,backgroundColor:Colors.black26 );
-
+      AwesomeDialog(
+        context: context,
+        width: 400,
+        dialogType: DialogType.INFO,
+        animType: AnimType.SCALE,
+        title: '...عذراً',
+        desc: message,
+        btnOkOnPress: () {
+          Get.back();
+        },
+      ).show();
+      return null;
     } catch (error) {
-       Get.snackbar(
+      Get.snackbar(
         'Error!',
         error.toString(),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: const Color.fromARGB(255, 139, 190, 140),
         colorText: Colors.white,
       );
-      
-      }
+    }
   }
-
 }
