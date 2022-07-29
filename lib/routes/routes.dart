@@ -1,4 +1,5 @@
 import 'package:admin_panal/page/Manage_ads.dart';
+import 'package:admin_panal/page/add_ads.dart';
 import 'package:admin_panal/page/feedback.dart';
 import 'package:admin_panal/page/home.dart';
 import 'package:admin_panal/page/login.dart';
@@ -23,6 +24,7 @@ class AppRoutes {
   static const cretive = Routes.cretiveScreen;
   static const notification = Routes.notificationScreen;
   static const feedback = Routes.feedbackScreen;
+  static const addads = Routes.addadsScreen;
 
   static final routes = [
     GetPage(
@@ -68,6 +70,10 @@ class AppRoutes {
       name: Routes.feedbackScreen,
       page: () =>   FeedBackScreen(),
     ),
+     GetPage(
+      name: Routes.addadsScreen,
+      page: () =>   Add_Ads_Screen(),
+    ),
   ];
 }
 
@@ -83,4 +89,5 @@ class Routes {
   static const cretiveScreen = "/cretiveScreen";
   static const notificationScreen = "/notificationScreen";
   static const feedbackScreen = "/feedbackScreen";
+  static const addadsScreen = "/addadsScreen";
 }

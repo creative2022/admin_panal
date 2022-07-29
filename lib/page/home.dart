@@ -1,4 +1,5 @@
 import 'package:admin_panal/page/Manage_ads.dart';
+import 'package:admin_panal/page/add_ads.dart';
 import 'package:admin_panal/page/feedback.dart';
 import 'package:admin_panal/page/manage_admin.dart';
 import 'package:admin_panal/page/manage_products.dart';
@@ -68,6 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedScreen =   FeedBackScreen();
         });
         break;
+         case AppRoutes.addads:
+        setState(() {
+          _selectedScreen =   Add_Ads_Screen();
+        });
+        break;
     }
   }
 
@@ -99,6 +105,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 AdminMenuItem(
                     title: 'ٌإدارة الإعلانات',
                     route: AppRoutes.ads,
+                    icon: Icons.ads_click),
+                     AdminMenuItem(
+                    title: 'إضافة إعلانات',
+                    route: AppRoutes.addads,
                     icon: Icons.ads_click),
                 AdminMenuItem(
                     title: ' التقارير',
