@@ -84,7 +84,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                                           "1"
                                                       ? Icon(Icons.check)
                                                       : Icon(Icons
-                                                          .no_accounts_outlined),
+                                                          .close),
                                                   onTap: () {
                                                     if (snapshot.data!.docs[i]
                                                             .data()['read'].toString() ==
@@ -178,7 +178,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                                           '1'
                                                       ? Icon(Icons.check)
                                                       : Icon(Icons
-                                                          .no_accounts_outlined),
+                                                          .close),
                                                   onTap: () {
                                                     if (snapshot.data!.docs[i]
                                                             .data()['edit'].toString() ==
@@ -272,7 +272,7 @@ class _AdminScreenState extends State<AdminScreen> {
                                                           "1"
                                                       ? Icon(Icons.check)
                                                       : Icon(Icons
-                                                          .no_accounts_outlined),
+                                                          .close),
                                                   onTap: () {
                                                     if (snapshot.data!.docs[i]
                                                             .data()['delete'].toString() ==
